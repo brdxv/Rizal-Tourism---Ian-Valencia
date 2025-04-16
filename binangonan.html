@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Binangonan - Rizal Province</title>
+
+  <link href="fonts/satoshi.css" rel="stylesheet">
+  <link href="fonts/sentient.css" rel="stylesheet">
+
+  <link href="menu.css" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+    scroll-behavior: smooth;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    }
+
+
+    body {
+      font-family: 'Satoshi-Regular', sans-serif;
+      color: #222;
+      
+    }
+
+    h1, h2 {
+      font-family: 'Sentient', serif;
+    }
+    h3 {
+      font-family: 'Sentient', serif;
+      color: black;
+      
+    }
+
+    h4 {
+      font-family: 'Sentient', serif;
+      color: rgb(57, 57, 57);
+      text-align: left;
+    }
+
+    section {
+      scroll-snap-align: start;
+    }
+    .hero {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    overflow: hidden;
+    }
+
+
+    .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: url('Resources/Images/town2.jpg') center center / cover no-repeat;
+    filter: brightness(0.7); /* Optional */
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+    }
+
+    .hero-bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+    z-index: 1;
+    }
+        
+
+    .second-hero {
+    position: relative; /* Ensure it's not being shifted off-screen */
+    background: rgb(169, 169, 169);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 0; /* Reset any unwanted padding that might push things left */
+    padding-right: 0; /* Same for right side */
+    }
+
+    .hero h1 {
+      font-size: 100px;
+      text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .hero h2 {
+      font-size: 1.8rem;
+      margin-top: 10px;
+      color: #eee;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    .history-preview {
+      max-width: 1500px;
+      margin-top: 20px;
+      font-size: 30px;
+      padding: 0 20px;
+    }
+
+    .history-preview a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .wrapper {
+    transform-origin: center center;
+    transform: scale(0.75);
+    width: 70vw;
+    margin-left: 10%;
+    }
+
+    .bento {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 300px);
+    gap: 10px;
+    padding-left: 0; /* Ensure no padding pushing content left */
+    padding-right: 0; /* Same for right */
+    }
+
+
+    .bento-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    }
+
+    .bento-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease;
+      
+    }
+
+    .bento-item:hover img {
+      transform: scale(1.05);
+      
+    }
+
+    .bento-item::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+      pointer-events: none;
+    }
+
+    .bento-content {
+      position: absolute;
+      bottom: 15px;
+      left: 15px;
+      right: 25px;
+      color: white;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .bento-content .text {
+      font-size: 25px;
+      font-weight: 600;
+    }
+
+    .bento-content .arrow {
+      width: 32px;
+      height: 32px;
+      border: 2px solid white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 16px;
+      transform: rotate(-45deg);
+    }
+
+    .item-a { grid-column: 1 / 2; grid-row: 1 / 3; }
+    .item-b { grid-column: 2 / 3; grid-row: 1 / 2; }
+    .item-c { grid-column: 3 / 4; grid-row: 1 / 2; }
+    .item-d { grid-column: 2 / 4; grid-row: 2 / 3; }
+    .item-e { grid-column: 2 / 4 ; grid-row: 3 / 5 ; }
+
+    .item-text {
+      grid-column: 1 / 2;
+      grid-row: 3 / 5;
+      background-color: #fff;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .text-left h2 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    .text-left p {
+      margin-bottom: -30px;
+      font-size: 0.95rem;
+      color: #000000;
+    }
+
+    .text-right p {
+      margin-bottom: -30px;
+      font-size: 0.95rem;
+      color: #000000;
+      text-align: left;
+      
+    }
+
+    .text-right .info-block {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+    }
+
+    .hero h3 {
+        margin-bottom: 10px;
+    }
+
+    .info-block .icon-holder {
+      width: 50px;
+      height: 50px;
+      background-color: #000000;
+      border-radius: 10px;
+      flex-shrink: 0;
+    }
+
+    .info-block h3 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .info-block p {
+      margin: 5px 0 0;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    @media (max-width: 1024px) {
+      .bento {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+      }
+
+      .item-e,
+      .item-a,
+      .item-b,
+      .item-c,
+      .item-d,
+      .item-text {
+        grid-column: span 1 !important;
+        grid-row: auto !important;
+        height: 250px;
+      }
+
+      .item-text {
+        height: auto;
+        padding: 20px;
+      }
+      .item-d{
+        z-index: -1;
+      }
+    }
+
+    /* Limited Beat Animation (2x only) */
+    @keyframes beat-twice {
+      0%, 100% { transform: scale(1); }
+      25% { transform: scale(1.08); }
+      50% { transform: scale(1); }
+      75% { transform: scale(1.08); }
+    }
+
+    .scale-effect {
+      animation: beat-twice 2.4s ease-in-out forwards;
+      z-index: 5;
+    }
+
+    .mouse-icon {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: auto;
+    opacity: 0.8;
+    animation: float 2s ease-in-out infinite;
+    z-index: 2;
+    }
+
+    @keyframes float {
+    0%, 100% {
+        transform: translateX(-50%) translateY(0);
+    }
+    50% {
+        transform: translateX(-50%) translateY(10px);
+    }
+    }
+
+    .carousel1, .carousel2, .carousel3, .carousel4, .carousel5 {
+    display: none;
+    }
+
+    .carousel1, .carousel2, .carousel3, .carousel4, .carousel5 {
+      width: 30vw;
+      height: 100vh;
+      overflow: hidden;
+      position: absolute;
+      margin-left: 5%;
+    }
+
+    /* Carousel image styling and animation */
+    .carousel1 img, .carousel2 img, .carousel3 img, .carousel4 img, .carousel5 img {
+      width: 100%;
+      height: auto;
+      animation: carousel-animation 10s infinite linear;
+    }
+
+    /* Keyframes for carousel animation */
+    @keyframes carousel-animation {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-100%); }
+    }
+
+    .carousel1 img, .carousel2 img, .carousel3 img, .carousel4 img, .carousel5 img {
+    width: 100%;
+    height: auto;
+    animation: carousel-animation 10s infinite linear;
+    animation-fill-mode: forwards;
+    }
+
+    /* Side grid for image carousel */
+    .side-grid {
+      position: absolute;
+      top: 0;
+      width: 25%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+    }
+
+    /* Left side grid styles */
+    .left-side {
+      left: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+
+    /* Right side grid styles */
+    .right-side {
+      right: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center top;
+      z-index: 10;
+      width: 31.3vw;
+      height: 100vh;
+      color: #000000;
+      background: white;
+      pointer-events: auto;
+    }
+
+    .right-side h2 {
+      color: #000000;
+      font-size: large;
+    }
+
+    .bento-item.active::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 4;
+    }
+
+    .bento-item.active-grid {
+      position: relative;
+    }
+
+    .bento-item.active-grid::before {
+  content: none !important;
+}
+
+    .bento-item.inactive {
+      pointer-events: none;
+      filter: brightness(0.5);
+    }
+
+
+    /* Keep overlay for inactive grids */
+.bento-item.inactive::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 4;
+  pointer-events: none;
+}
+
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 30px;
+      height: 30px;
+      background: rgba(0,0,0,0.5);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      font-size: 16px;
+      cursor: pointer;
+      z-index: 11;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .right-content {
+      padding: 40px;
+      height: 100%;
+      overflow-y: auto;
+    }
+
+    .home-button {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 50px;
+  height: 50px;
+  background: rgba(0,0,0,0.5);
+  color: white;
+  border-radius: 50%; /* Perfect circle */
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 100;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  overflow: hidden;
+}
+
+.home-button::before {
+  content: 'Home';
+  position: absolute;
+  left: 60px; /* Start outside the circle */
+  opacity: 0;
+  transition: all 0.3s ease;
+  font-size: 16px;
+  font-family: 'Satoshi-Regular', sans-serif;
+  white-space: nowrap;
+}
+
+.home-button:hover {
+  background: rgba(0,0,0,0.8);
+  width: 100px; /* Expanded width */
+  border-radius: 25px; /* Pill shape when expanded */
+  justify-content: flex-end; /* Push icon to right */
+  padding-right: 15px; /* Space for icon */
+}
+
+.home-button:hover::before {
+  opacity: 1;
+  left: 15px; /* Move text inside the expanded button */
+  transition-delay: 0.1s;
+}
+
+  </style>
+</head>
+<body>
+  <nav class="floating-menu">
+    <a href="home page.html" class="menu-item">Home</a>
+    <a href="about.html" class="menu-item">About</a>
+    <a href="about.html#contact" class="menu-item">Contacts</a>
+  </nav>
+        <a href="home page.html" class="home-button" onclick="scrollToTop()">⌂</a>
+
+            <!-- Navigation Buttons -->
+            <div class="town-navigation">
+              <a href="antipolo.html" class="nav-button prev-town">
+                <i class="fas fa-arrow-left"></i>
+                <span>Previous Town</span>
+              </a>
+              
+              <a href="montalban.html" class="nav-button next-town">
+                <span>Next Town</span>
+                <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <h1>Binangonan, Rizal</h1>
+        <h2>A Scenic Gateway of the Highlands</h2>
+        <div class="history-preview">
+        Founded in 1900, Binangonan is a municipality that combines coastal and mountainous landscapes. It played a significant role during World War II as a site of resistance against Japanese forces. The town's history is also intertwined with the prehistoric Angono-Binangonan Petroglyphs, located on the boundary between Binangonan and Angono.
+        <a onclick="scrollToHistory()">See more...</a>
+
+        <img src="Resources/Images/mouse-icon.png" alt="Scroll Down Icon" class="mouse-icon" />
+        </div>
+    </section>
+
+    <!-- Second Section -->
+    <section class="hero second-hero" id="history-section">
+      <!-- Side grids for carousel and text content -->
+      <div class="side-grid left-side" id="left-side">
+        <div class="carousel1">
+          <img src="Resources/Images/binangonan/item-A1.jpg" alt="Image 1" />
+          <img src="Resources/Images/binangonan/item-A2.jpg" alt="Image 2" />
+          <img src="Resources/Images/binangonan/item-A3.jpg" alt="Image 3" />
+        </div>
+
+        <div class="carousel2">
+          <img src="Resources/Images/binangonan/item-A4.jpg" alt="Image 4" />
+          <img src="Resources/Images/binangonan/item-A5.jpg" alt="Image 5" />
+          <img src="Resources/Images/binangonan/item-A6.jpg" alt="Image 6" />
+        </div>
+
+        <div class="carousel3">
+          <img src="Resources/Images/binangonan/item-A7.jpg" alt="Image 7" />
+          <img src="Resources/Images/binangonan/item-A8.jpg" alt="Image 8" />
+          <img src="Resources/Images/binangonan/item-A9.jpg" alt="Image 9" />
+        </div>
+
+        <div class="carousel4">
+          <img src="Resources/Images/binangonan/item-A12.jpg" alt="Image 10" />
+          <img src="Resources/Images/binangonan/item-A11.jpg" alt="Image 11" />
+          <img src="Resources/Images/binangonan/item-A10.jpg" alt="Image 12" />
+        </div>
+
+        <div class="carousel5">
+          <img src="Resources/Images/binangonan/item-A13.jpg" alt="Image 13" />
+          <img src="Resources/Images/binangonan/item-A14.jpg" alt="Image 14" />
+          <img src="Resources/Images/binangonan/item-A15.jpg" alt="Image 15" />
+        </div>
+      </div>
+      
+      <div class="side-grid right-side" id="right-side">
+        <button class="close-btn" id="close-btn">×</button>
+        <div class="right-content">
+          <div class="content-a">
+            <h2>Angono-Binangonan Petroglyphs</h2>
+            <p>These ancient rock carvings, shared with neighboring Angono, are considered the oldest known artworks in the Philippines, dating back to before 2000 BC. The 127 human and animal figures engraved on a rock wall provide a fascinating glimpse into the prehistoric culture of the region. The Angono-Binangonan Petroglyphs, located in Rizal province, are the oldest known artworks in the Philippines, believed to date back to approximately 3000 BCE. Discovered in 1965 by National Artist Carlos “Botong” Francisco during a field trip, the site features 127 distinct carvings etched into a volcanic rock wall. These carvings depict stylized human figures, animals such as frogs and lizards, and various geometric shapes.
+
+              The petroglyphs are thought to have served ritualistic or healing purposes, providing a glimpse into the spiritual and cultural practices of prehistoric Filipinos. The site itself is a shallow rock shelter, measuring approximately 63 meters in width, 8 meters in depth, and 5 meters in height. It is formed in volcanic tuffs of the Quaternary period, likely created by faulting.
+              
+              Recognized for its historical significance, the Angono-Binangonan Petroglyphs were declared a National Cultural Treasure in 1973. Efforts have been made to preserve and protect the site from natural erosion and human-induced damage. Today, the petroglyphs stand as a testament to the rich cultural heritage of the Philippines and are a must-visit for those interested in archaeology and history.
+              
+              </p>
+          </div>
+          <div class="content-b">
+            <h2>Binalayan Festival</h2>
+            <p>This vibrant festival celebrates Binangonan's rich culture, faith, and prosperity through street dances, colorful performances, and traditional rituals. It showcases the town's fishing heritage and the resilience of its people. Binalayan Festival is an annual cultural celebration held in Binangonan, Rizal, honoring the town's rich history, artistic heritage, and vibrant community spirit. Situated between the foothills of Sierra Madre and the shores of Laguna de Bay, Binangonan is Rizal province's oldest and first-class municipality, 
+              encompassing 72.70 square kilometers and 40 barangays, including 17 from Talim Island and 23 from the mainland. The festival's name, "Binalayan," is derived from the town's original name, "Binangonan," which means "place of the bell" in Tagalog. This name is linked to the town's historical significance and its association with the bell used in local religious practices.​
+
+              A highlight of the Binalayan Festival is the "Gewang-gewang," a traditional dance performed by locals while carrying the image of St. Ursula.
+              This dance showcases the community's devotion and artistic expression, reflecting the town's deep-rooted cultural traditions.
+              The Binalayan Festival not only celebrates Binangonan's rich cultural heritage but also fosters community pride and unity. It serves as a platform for showcasing local talent, preserving traditions, and promoting the town's unique identity to both residents and visitors.</p>
+          </div>
+          <div class="content-c">
+            <h2>Fishing Culture</h2>
+            <p>Binangonan's lakeside communities maintain traditional boat-making and fishing practices. The town is particularly known for its inihaw na
+              tilapia (grilled tilapia) and other freshwater fish dishes from Laguna de Bay, prepared using generations-old recipes. Local fishermen employ various traditional methods to harvest fish from the lake. One such technique is the use of the "bunbon", a traditional fish trap designed to catch fish effectively. These traps are strategically placed in the lake, taking advantage of the fish's natural movements and behaviors. The community's deep
+              understanding of the lake's ecology and the behavior of different fish species has been passed down through generations, ensuring sustainable practices.​cDespite its abundance, Laguna de Bay faces environmental challenges that impact the fishing industry. Pollution and overfishing have led to a decline in fish populations, affecting the livelihoods of local fishermen. Conservation efforts are underway to address these issues, focusing on 
+              sustainable fishing practices, pollution control, and habitat restoration to ensure the long-term health of the lake and its surrounding communities.</p>
+          </div>
+          <div class="content-d">
+            <h2>Mt. Tagapo</h2>
+            <p>Also known as "Susong Dalaga" for its breast-shaped peak, this mountain on Talim Island offers panoramic views of Laguna de Bay. The hike provides a unique perspective of Binangonan's natural beauty, combining lake and mountain landscapes. Mt. Tagapo, also known as Mt. Susong Dalaga, is the highest peak on Talim Island in Binangonan, Rizal, standing at 438 meters above sea level. It offers stunning panoramic views of Laguna de Bay, the Sierra Madre mountains, and even the distant skylines of Metro Manila. The mountain's name, "Susong Dalaga" (Maiden's Breast), comes from its conical shape, resembling the breast of a maiden, and is a popular landmark for hikers and nature enthusiasts.
+
+              The hike to the summit is beginner-friendly with a difficulty level of 2/9, making it accessible to most hikers. The round-trip trail is approximately
+              6.5 kilometers long, with an estimated hiking time of 1.5 to 2 hours. The journey offers a blend of natural beauty, from walking through bamboo forests to climbing grassy slopes. At the summit, hikers are rewarded with breathtaking 360-degree views of Laguna de Bay, nearby mountains like Mt. Sembrano, and even Mt. Banahaw on clear days.
+              
+              To reach the mountain, visitors first travel to Binangonan Port from Metro Manila via jeepney or van. From there, a boat ride takes them to Barangay Janosa on Talim Island. Once on the island, hikers can register at the base camp and hire
+              a local guide, which costs approximately ₱400 per group. The hike itself is easy to moderate, taking around 1.5 to 2 hours to reach the peak.
+              For a safe and enjoyable hike, it is recommended to bring essentials such as sunscreen, a hat, enough water, snacks, and rain gear. The best time
+              to hike Mt. Tagapo is during the dry season from November to April, as the weather can get hot during midday. The views from the summit, combined with the serene surroundings, make it a rewarding destination for nature lovers and adventure seekers.
+              
+              </p>
+          </div>
+          <div class="content-e">
+            <h2>Historical Content of Binangonan</h2>
+            <p>Founded in 1900, Binangonan has developed a unique identity shaped by its geography - part lakeside community, part highland town. During World War II, it served as an important site of resistance against Japanese forces, with local guerrillas using the mountainous terrain to their advantage.</p>
+            <p>The town's economy revolves around fishing in Laguna de Bay and agriculture in its upland areas. Traditional crafts like bamboo and rattan weaving remain important cottage industries, preserving cultural heritage while providing livelihood.</p>
+            <p>Binangonan's location makes it a strategic gateway between the lowland urban centers and the mountainous regions of Rizal. This has influenced its development as both a fishing hub and a starting point for nature adventures in the highlands. </p>
+            <p>Binangonan is a town in the province of Rizal with a rich history that dates back to the pre-colonial period. The name "Binangonan" is believed to have originated from the word "binañgonan," meaning "the first town established around the lake," referring to the legend of how towns around Laguna de Bay were named.
+
+              In 1574, Spanish missionaries arrived in the region and interacted with the indigenous Aeta people. By 1621, Binangonan was established as a parish by the Franciscan missionaries, and they chose Santa Ursula as the patron saint of the church. The Santa Ursula Parish Church, built between 1792 and 1800 and renovated in 1853, is a historic church located at the heart of the town.
+              
+              In 1900, Binangonan became part of the newly created Rizal province under Act No. 137 of the Philippine Commission. However, it was temporarily merged with the towns of Morong, Baras, and Cardona in 1903 under Act No. 942, before being restored as an independent town again in 1903 under Act No. 948, and Angono was later rejoined with Binangonan.
+              
+              The Angono-Binangonan Petroglyphs, located on the boundary between Binangonan and Angono, is an important archaeological site containing human and animal-shaped carvings that are estimated to be over 3,000 years old. This is the oldest known rock art in the Philippines and an essential part of Binangonan’s history.
+              
+              During World War II, on February 25, 1945, as the people of Binangonan celebrated their festival in honor of Santa Ursula, they were liberated from the Japanese by American soldiers. The residents held a parade and offered food to the soldiers, and in return, the Americans gave chocolates, candies, and cigarettes.
+              
+              Today, Binangonan is a first-class municipality with a population of over 300,000 people. It is well known for its fishing industry, with the Binangonan Fish Port and cement plants like Rizal Cement and Grandspan being major economic drivers. The primary livelihood of the residents is fishing and farming.
+              
+              The history of Binangonan is a testament to the resilience and cultural richness of the town, from ancient times to the present.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="wrapper">
+        <div class="bento">
+          <!-- Text block (static) -->
+          <section class="item-text" id="history-paragraph">
+            <div class="text-left">
+              <h3>Where Lake Meets Mountains</h3>
+              <p>Binangonan offers a unique blend of lakeside living and highland adventures, with traditions rooted in both landscapes.</p>
+            </div>
+            <div class="text-right">
+              <div class="info-block">
+                <div class="icon-holder"></div>
+                <div>
+                  <h4>Ancient Petroglyphs</h4>
+                  <p>Shared with Angono, these prehistoric carvings are among the Philippines' most important archaeological treasures.</p>
+                </div>
+              </div>
+              <div class="info-block">
+                <div class="icon-holder"></div>
+                <div>
+                  <h4>Fishing Heritage</h4>
+                  <p>Generations of fisherfolk have maintained traditional practices on Laguna de Bay's waters.</p>
+                </div>
+              </div>
+              <div class="info-block">
+                <div class="icon-holder"></div>
+                <div>
+                  <h4>Mountain Adventures</h4>
+                  <p>Mt. Tagapo offers hiking opportunities with stunning views of the lake and surrounding landscapes.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Other bento items -->
+          <div class="bento-item item-a" id="grid-A">
+            <img src="Resources/Images/binangonan/item-A1.jpg" alt="Binangonan Image A" />
+            <div class="bento-content">
+              <div class="text">Petroglyphs</div>
+              <div class="arrow">→</div>
+            </div>
+          </div>
+
+          <div class="bento-item item-b" id="grid-B">
+            <img src="Resources/Images/binangonan/item-A4.jpg" alt="Binangonan Image B" />
+            <div class="bento-content">
+              <div class="text">Binalayan Festival</div>
+              <div class="arrow">→</div>
+            </div>
+          </div>
+
+          <div class="bento-item item-c" id="grid-C">
+            <img src="Resources/Images/binangonan/item-A7.jpg" alt="Binangonan Image C" />
+            <div class="bento-content">
+              <div class="text">Fishing Culture</div>
+              <div class="arrow">→</div>
+            </div>
+          </div>
+
+          <div class="bento-item item-d" id="grid-D">
+            <img src="Resources/Images/binangonan/item-A12.jpg" alt="Binangonan Image D" />
+            <div class="bento-content">
+              <div class="text">Mt. Tagapo</div>
+              <div class="arrow">→</div>
+            </div>
+          </div>
+
+          <!-- Animated grid first -->
+          <div class="bento-item item-e" id="grid-E">
+            <img src="Resources/Images/binangonan/item-A13.jpg" alt="Binangonan Image E" />
+            <div class="bento-content">
+              <div class="text">History</div>
+              <div class="arrow">→</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  <script>
+    function scrollToHistory() {
+      const section = document.getElementById("history-section");
+      const historyGrid5 = document.getElementById("grid-E");
+
+      section.scrollIntoView({ behavior: "smooth" });
+
+      // Reset and trigger animation (force reflow)
+      historyGrid5.classList.remove("scale-effect");
+      void historyGrid5.offsetWidth; // reflow
+      historyGrid5.classList.add("scale-effect");
+
+
+      function setupCarousels() {
+  const carousels = document.querySelectorAll('[class^="carousel"]');
+  carousels.forEach(carousel => {
+    // Clone all images and append them
+    const images = carousel.querySelectorAll('img');
+    images.forEach(img => {
+      const clone = img.cloneNode(true);
+      carousel.appendChild(clone);
+    });
+    
+    // Double the animation duration since we doubled the content
+    carousel.style.animationDuration = '20s';
+    });
+    }
+
+    // Call this in your DOMContentLoaded event
+    document.addEventListener("DOMContentLoaded", function() {
+    setupCarousels();
+    });
+
+    function scrollToTop() {
+    window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+    });
+    return false; // Prevent default anchor behavior
+    }
+
+
+    }
+
+    function hideAllCarousels() {
+      const carousels = document.querySelectorAll('.carousel1, .carousel2, .carousel3, .carousel4, .carousel5');
+      carousels.forEach(c => c.style.display = 'none');
+    }
+
+    function showCarousel(number) {
+      hideAllCarousels();
+      const carousel = document.querySelector('.carousel' + number);
+      if (carousel) {
+        carousel.style.display = 'block';
+      }
+    }
+
+    function hideAllContent() {
+      const contents = document.querySelectorAll('.right-content > div');
+      contents.forEach(c => c.style.display = 'none');
+    }
+
+    function showContent(letter) {
+      hideAllContent();
+      const content = document.querySelector('.content-' + letter);
+      if (content) {
+        content.style.display = 'block';
+      }
+    }
+
+// Main functionality
+document.addEventListener("DOMContentLoaded", function() {
+  const bentoItems = document.querySelectorAll('.bento-item');
+  const leftSide = document.getElementById('left-side');
+  const rightSide = document.getElementById('right-side');
+  const closeBtn = document.getElementById('close-btn');
+  let activeItem = null;
+
+  // Initialize - hide all carousels and content
+  hideAllCarousels();
+  hideAllContent();
+  leftSide.style.opacity = '0';
+  rightSide.style.opacity = '0';
+
+  // Add click event to each bento item
+  bentoItems.forEach((item, index) => {
+    item.addEventListener('click', function() {
+      // If clicking the active item, close it
+      if (activeItem === this) {
+        closeActiveItem();
+        return;
+      }
+
+      // If another item is active, ignore click
+      if (activeItem) return;
+
+      // Set this item as active
+      activeItem = this;
+      
+      // Show overlay on other items only
+      bentoItems.forEach(bento => {
+        if (bento !== activeItem) {
+          bento.classList.add('inactive');
+        } else {
+          bento.classList.remove('inactive');
+        }
+      });
+
+      // Add active class to clicked item
+      this.classList.add('active-grid');
+
+      // Show side grids
+      leftSide.style.opacity = '1';
+      rightSide.style.opacity = '1';
+
+      // Show corresponding carousel and content
+      showCarousel(index + 1);
+      showContent(String.fromCharCode(97 + index)); // a, b, c, d, e
+    });
+  });
+
+
+      // Close button functionality
+      closeBtn.addEventListener('click', closeActiveItem);
+
+      // Function to close the active item
+      function closeActiveItem() {
+        if (!activeItem) return;
+
+        // Hide side grids
+        leftSide.style.opacity = '0';
+        rightSide.style.opacity = '0';
+
+        // Remove active classes
+        activeItem.classList.remove('active-grid');
+        
+        // Remove inactive class from other items
+        bentoItems.forEach(bento => {
+          bento.classList.remove('inactive');
+        });
+
+        // Hide carousels
+        hideAllCarousels();
+        hideAllContent();
+
+        // Reset active item
+        activeItem = null;
+      }
+
+      // Close when clicking outside the right side content
+      rightSide.addEventListener('click', function(e) {
+        if (e.target === this) {
+          closeActiveItem();
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

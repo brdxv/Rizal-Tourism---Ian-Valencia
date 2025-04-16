@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Explore Rizal Province</title>
+  <link href="fonts/satoshi.css" rel="stylesheet">
+  <link href="fonts/sentient.css" rel="stylesheet">
+
+  <link href="menu.css" rel="stylesheet">
+
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: url('Resources/Images/antipolo-city-lights.jpg') no-repeat center center/cover;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .main-container {
+      height: 100%;
+      padding: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .text-content h1, .town-name {
+      font-family: 'Sentient-Bold';
+      color: white;
+      text-align: left;
+      font-size: 6vw;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+    }
+
+    .text-content p, .town-phrase {
+      font-family: 'Satoshi-Regular';
+      color: white;
+      text-align: left;
+      font-size: 2vw;
+      font-weight: bold;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+    }
+
+    .hover-town-desc {
+      position: absolute;
+      top: 38%;
+      left: 50px;
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .hover-town-desc p.town-phrase {
+      margin-bottom: 0.2em;
+    }
+
+    .iframe-wrapper {
+      position: fixed;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      width: 50vw;
+      height:100vh;
+      z-index: 100;
+      mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 80%, rgba(0, 0, 0, 0) 100%);
+      -webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 100%, rgba(0, 0, 0, 0) 100%);
+      border-radius: 20px 0 0 20px;
+      overflow: hidden;
+      pointer-events: auto;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    bg-transition {
+      position: fixed;
+      inset: 0;
+      z-index: 5; /* Increased to ensure it's above other elements */
+      pointer-events: none;
+      background-size: cover;
+      background-position: center;
+      opacity: 1;
+      clip-path: circle(0% at var(--circle-x, 75%) var(--circle-y, 50%));
+      transition: clip-path 1.2s cubic-bezier(0.65, 0, 0.35, 1), background-image 0.5s;
+      will-change: clip-path; /* Optimize for animation */
+    }
+
+    .bg-transition.active {
+      clip-path: circle(150% at var(--circle-x, 75%) var(--circle-y, 50%));
+    }
+
+    @media (max-width: 1024px) {
+      .main-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 30px;
+      }
+
+      .text-content {
+        max-width: 100%;
+      }
+
+      .iframe-wrapper {
+        width: 100vw;
+        height: 50vh;
+        top: auto;
+        bottom: 0;
+        transform: none;
+        border-radius: 20px 20px 0 0;
+      }
+    }
+
+    #exploreText, #rizalText {
+      transition: opacity 0.3s ease;
+    }
+
+    .text-fade-out {
+      transition: opacity 0.5s ease;
+    }
+
+    .right-gradient-overlay {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 70vw;
+      height: 100vh;
+      background: linear-gradient(to left, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    p.intro {
+    width: 50%; /* Or whatever size works */
+    font-size: 15px; /* Scale to your preference */
+    margin-top: 10px;
+    }
+
+
+  </style>
+</head>
+<body>
+  <nav class="floating-menu">
+    <a href="home page.html" class="menu-item">Home</a>
+    <a href="about.html" class="menu-item">About</a>
+    <a href="about.html#contact" class="menu-item">Contacts</a>
+  </nav>
+
+  <div class="bg-transition" id="bgOverlay"></div>
+  <div class="right-gradient-overlay"></div>
+  <div class="main-container">
+    <div class="text-content">
+      <div class="hover-town-desc" id="townPhrase">
+        <p class="town-phrase"></p>
+        <h1 class="town-name"></h1>
+      </div>
+      <p id="exploreText">Explore the Beauty of</p>
+      <h1 id="rizalText">Rizal Province</h1>
+      <p class=" intro" id="rizalTextp">Rizal is a province rich in culture, history, and natural beauty. Known for its art, mountains,
+        and scenic spots, it has always been a place that quietly stands out just outside Metro Manila.
+        From the creative streets of Angono to the breathtaking views in Tanay, every town has something different to offer.
+        <br><br>
+        This website was created to bring those experiences closer to you. Whether you're planning a trip or just curious,
+        the goal is to give you a smooth and engaging way to explore what makes Rizal special. Here, you’ll find helpful info,
+        visuals, and inspiration. All in one place. Not just a guide, but a starting point for your next discovery.</p>
+    </div>
+  </div>
+
+  <div class="iframe-wrapper">
+    <iframe id="carouselFrame" src="towns.html" title="Towns in Rizal"></iframe>
+  </div>
+
+  <script>
+    // Function to handle iframe carousel control
+    function scrollIframe(direction) {
+      const iframe = document.getElementById("carouselFrame");
+      if (iframe.contentWindow && iframe.contentWindow.moveCarousel) {
+        iframe.contentWindow.moveCarousel(direction);
+      }
+    }
+
+    // Background transition management
+    let isAnimating = false;
+    let queuedBgUrl = null;
+    const overlay = document.getElementById("bgOverlay");
+
+// In the message event listener:
+window.addEventListener("message", function(event) {
+  if (event.data.townNumber) {
+    // Fade out immediately (speed controlled by CSS)
+    document.getElementById('exploreText').style.opacity = '0';
+    document.getElementById('rizalText').style.opacity = '0';
+    document.getElementById('rizalTextp').style.opacity = '0';
+  }
+  
+  if (event.data.clearPhrase) {
+    // Optional: Add delay before fading back in
+    setTimeout(() => {
+      document.getElementById('exploreText').style.opacity = '1';
+      document.getElementById('rizalText').style.opacity = '1';
+      document.getElementById('rizalTextp').style.opacity = '1';
+    }, 500); // 300ms delay before fade-in starts
+  }
+});
+
+    window.addEventListener("message", function(event) {
+      // Handle background transitions
+      if (event.data.bg) {
+        const newBgUrl = event.data.bg;
+        const circleX = event.data.circleX || "75%";
+        const circleY = event.data.circleY || "50%";
+
+        function runTransition(bgUrl) {
+          isAnimating = true;
+          
+          // Set the origin point for the circle
+          overlay.style.setProperty('--circle-x', circleX);
+          overlay.style.setProperty('--circle-y', circleY);
+
+          if (bgUrl === "Resources/Images/binangonan-city-lights.webp") {
+            // Special case for clearing background
+            overlay.classList.remove("active");
+            setTimeout(() => {
+              overlay.style.backgroundImage = "";
+              isAnimating = false;
+              if (queuedBgUrl) {
+                const queued = queuedBgUrl;
+                queuedBgUrl = null;
+                runTransition(queued);
+              }
+            }, 1000);
+          } else {
+            // Normal transition
+            overlay.style.backgroundImage = `url('${bgUrl}')`;
+            void overlay.offsetWidth; // Trigger reflow
+            overlay.classList.add("active");
+
+            setTimeout(() => {
+              isAnimating = false;
+              if (queuedBgUrl) {
+                const queued = queuedBgUrl;
+                queuedBgUrl = null;
+                runTransition(queued);
+              }
+            }, 1300);
+          }
+        }
+
+        if (isAnimating) {
+          queuedBgUrl = newBgUrl;
+        } else {
+          runTransition(newBgUrl);
+        }
+      }
+
+      // Handle town information display
+      if (event.data.townNumber) {
+        const townNum = event.data.townNumber;
+        const townPhraseContainer = document.getElementById('townPhrase');
+        const phraseText = townPhraseContainer.querySelector('.town-phrase');
+        const townName = townPhraseContainer.querySelector('.town-name');
+
+        // Fade out main text
+        document.getElementById('exploreText').classList.add('text-fade-out');
+        document.getElementById('rizalText').classList.add('text-fade-out');
+        document.getElementById('rizalTextp').classList.add('text-fade-out');
+
+        // Town information mapping
+        const phrases = {
+          1: ["The Art Capital of Rizal", "Angono"],
+          2: ["The Pilgrimage City of the East", "Antipolo"],
+          3: ["The Scenic Gateway of the Highlands", "Binangonan"],
+          4: ["The Nature's Escape in Rizal", "Rodriguez"],
+          5: ["The Adventure Capital of Rizal", "Tanay"]
+        };
+
+        if (phrases[townNum]) {
+          phraseText.textContent = phrases[townNum][0];
+          townName.textContent = phrases[townNum][1];
+          townPhraseContainer.style.opacity = 1;
+        }
+      }
+
+      // Handle clearing town information
+      if (event.data.clearPhrase) {
+        const townPhraseContainer = document.getElementById('townPhrase');
+        townPhraseContainer.style.opacity = 0;
+        
+        // Fade in main text
+        document.getElementById('exploreText').classList.remove('text-fade-out');
+        document.getElementById('rizalText').classList.remove('text-fade-out');
+        document.getElementById('rizalTextp').classList.remove('text-fade-out');
+      }
+    });
+
+    // Keyboard navigation for carousel
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') {
+        scrollIframe(-1); // Move left
+      } else if (e.key === 'ArrowRight') {
+        scrollIframe(1); // Move right
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Towns in Rizal</title>
+  <link href="Resources/Fonts/sentient.css" rel="stylesheet">
+  <link href="Resources/Fonts/satoshi.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    .banner {
+      width: 100%;
+      height: 100vh;
+      text-align: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .scene {
+      width: 100%;
+      height: 100vh;
+      perspective: 1080px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform-style: preserve-3d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .slider {
+      width: 200px;
+      height: 250px;
+      position: absolute;
+      transform-style: preserve-3d;
+      animation: autoRun 20s linear infinite;
+      z-index: 4;
+    }
+
+    @keyframes autoRun {
+      from {
+        transform: rotateX(-16deg) rotateY(0deg);
+      }
+      to {
+        transform: rotateX(-16deg) rotateY(360deg);
+      }
+    }
+
+    .slider .item {
+      position: absolute;
+      inset: 0;
+      transform:
+        rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg))
+        translateZ(400px);
+      transition: transform 0.3s ease;
+    }
+
+    .slider .item:hover {
+      transform:
+        rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg))
+        translateZ(400px)
+        scale(1.1);
+      z-index: 5;
+    }
+
+    .slider .item a {
+      display: block;
+      width: 100%;
+      height: 100%;
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .slider .item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .slider .item:hover img {
+      transform: scale(1.05);
+    }
+
+    /* Card content overlay */
+    .card-content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 15px;
+      color: white;
+      background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+      transform: translateY(100%);
+      transition: transform 0.3s ease;
+      z-index: 2;
+      text-align: center;
+    }
+
+    .slider .item:hover .card-content {
+      transform: translateY(0);
+    }
+
+    .card-title {
+      font-family: 'Sentient-Bold';
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin-bottom: 5px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    }
+
+    .card-description {
+      font-family: 'Satoshi-Regular', sans-serif;
+      font-size: 0.8rem;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      max-height: 0;
+      overflow: hidden;
+    }
+
+    .slider .item:hover .card-description {
+      opacity: 1;
+      max-height: 100px;
+      transition-delay: 0.1s;
+    }
+
+    .card-arrow {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      width: 25px;
+      height: 25px;
+      border: 2px solid white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 12px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 3;
+      background-color: rgba(0, 0, 0, 0.3);
+      color: white;
+    }
+
+    .slider .item:hover .card-arrow {
+      opacity: 1;
+      transition-delay: 0.2s;
+    }
+
+    /* Town specific styles */
+    .angono-card .card-title {
+      color: #ffc36a;
+    }
+    .antipolo-card .card-title {
+      color: #d6ef58;
+    }
+    .binangonan-card .card-title {
+      color: #6dccff;
+    }
+    .montalban-card .card-title {
+      color: #a5ffd6;
+    }
+    .tanay-card .card-title {
+      color: #ef8bec;
+    }
+
+    .earth {
+      width: 300px;
+      height: 300px;
+      position: absolute;
+      border-radius: 50%;
+      overflow: hidden;
+      box-shadow: 0 0 20px 20px #000000 inset, 0 0 100px 10px #ffffff;
+      z-index: 3;
+      background-image: url('Resources/Images/earth_map3.jpg');
+      background-size: cover;
+      background-repeat: repeat-x;
+      background-position: 0 center;
+      animation: scrollEarth 10s linear infinite;
+    }
+
+    @keyframes scrollEarth {
+      from {
+        background-position: 60%;
+      }
+      to {
+        background-position: -100% center;
+      }
+    }
+
+    .earth:after {
+      position: absolute;
+      content: "";
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      box-shadow: -20px -10px 70px 1px #606060 inset;
+      border-radius: 50%;
+    }
+
+    .light-rays {
+      position: absolute;
+      bottom: 0;
+      left: 52%;
+      transform: translateX(-50%);
+      width: 400px;
+      height: auto;
+      z-index: 4;
+      pointer-events: none;
+      opacity: 1;
+    }
+
+    .banner .content {
+      position: absolute;
+      bottom: 0;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(1400px, 100vw);
+      height: max-content;
+      padding-bottom: 100px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1;
+    }
+
+    @media screen and (max-width: 1023px),
+           screen and (max-width: 1080px) {
+      .slider {
+        width: 160px;
+        height: 240px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="banner">
+    <div class="scene">
+      <!-- 🌍 Earth -->
+      <div class="earth"></div>
+
+      <!-- 🌟 Light Rays -->
+      <video class="light-rays" autoplay muted loop playsinline>
+        <source src="Resources/VIdeos/light-rays-v2.webm" type="video/webm">
+        Your browser does not support the video tag.
+      </video>
+
+      <!-- 🏙️ Cards -->
+      <div class="slider" style="--quantity: 5">
+        <!-- Angono -->
+        <div class="item angono-card" style="--position: 1">
+          <a href="angono.html" target="_top">
+            <img src="Resources/Images/town1.jpg" alt="Angono">
+            <div class="card-arrow">→</div>
+            <div class="card-content">
+              <div class="card-title">Angono</div>
+              <div class="card-description">Art Capital of the Philippines, home to the Higantes Festival</div>
+            </div>
+          </a>
+        </div>
+        
+        <!-- Antipolo -->
+        <div class="item antipolo-card" style="--position: 2">
+          <a href="antipolo.html" target="_top">
+            <img src="Resources/Images/town2.jpg" alt="Antipolo">
+            <div class="card-arrow">→</div>
+            <div class="card-content">
+              <div class="card-title">Antipolo</div>
+              <div class="card-description">Pilgrimage City known for its cathedral and mountain resorts</div>
+            </div>
+          </a>
+        </div>
+        
+        <!-- Binangonan -->
+        <div class="item binangonan-card" style="--position: 3">
+          <a href="binangonan.html" target="_top">
+            <img src="Resources/Images/town3.png" alt="Binangonan">
+            <div class="card-arrow">→</div>
+            <div class="card-content">
+              <div class="card-title">Binangonan</div>
+              <div class="card-description">Gateway to Talim Island with stunning lake views</div>
+            </div>
+          </a>
+        </div>
+        
+        <!-- Montalban (Rodriguez) -->
+        <div class="item montalban-card" style="--position: 4">
+          <a href="montalban.html" target="_top">
+            <img src="Resources/Images/town4.jpg" alt="Montalban">
+            <div class="card-arrow">→</div>
+            <div class="card-content">
+              <div class="card-title">Montalban</div>
+              <div class="card-description">Adventure hub with Wawa Dam and hiking trails</div>
+            </div>
+          </a>
+        </div>
+        
+        <!-- Tanay -->
+        <div class="item tanay-card" style="--position: 5">
+          <a href="tanay.html" target="_top">
+            <img src="Resources/Images/town5.jpg" alt="Tanay">
+            <div class="card-arrow">→</div>
+            <div class="card-content">
+              <div class="card-title">Tanay</div>
+              <div class="card-description">Nature destination with Daranak Falls and scenic views</div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const townBackgrounds = {
+      1: "Resources/Images/angono-city-lights.webp",
+      2: "Resources/Images/antipolo-city-lights.jpg",
+      3: "Resources/Images/binangonan-city-lights.webp",
+      4: "Resources/Images/montalban-city-lights.webp",
+      5: "Resources/Images/tanay-city-lights.webp"
+    };
+
+    function getEarthPosition() {
+      const earth = document.querySelector('.earth');
+      if (!earth) return { x: 50, y: 50 };
+      
+      const rect = earth.getBoundingClientRect();
+      return {
+        x: (rect.left + rect.width/2) / window.innerWidth * 100,
+        y: (rect.top + rect.height/2) / window.innerHeight * 100
+      };
+    }
+
+    // Queue system for smooth transitions
+    let hoverTimeout;
+    let currentTown = null;
+
+    function handleTownHover(townNumber) {
+      if (currentTown === townNumber) return;
+      
+      clearTimeout(hoverTimeout);
+      currentTown = townNumber;
+      
+      const earthPos = getEarthPosition();
+      window.parent.postMessage({
+        townNumber: townNumber,
+        bg: townBackgrounds[townNumber],
+        circleX: earthPos.x,
+        circleY: earthPos.y
+      }, "*");
+    }
+
+    function handleTownLeave() {
+      clearTimeout(hoverTimeout);
+      hoverTimeout = setTimeout(() => {
+        window.parent.postMessage({ clearPhrase: true }, "*");
+        currentTown = null;
+      }, 1000); // Small delay to prevent flickering
+    }
+
+    // Add event listeners
+    document.querySelectorAll('.item').forEach((item, index) => {
+      const townNumber = index + 1;
+      
+      item.addEventListener('mouseenter', () => handleTownHover(townNumber));
+      item.addEventListener('mouseleave', handleTownLeave);
+    });
+
+
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const x = e.pageX;
+      const delta = x - startX;
+      if (Math.abs(delta) > 2) {
+        isClick = false;
+        rotationY += delta * -0.3;
+        slider.style.transform = `rotateX(-16deg) rotateY(${rotationY}deg)`;
+        startX = x;
+      }
+    });
+
+    document.addEventListener('mouseup', (e) => {
+      isDragging = false;
+      slider.style.cursor = "grab";
+      if (!isClick) {
+        e.preventDefault();
+      }
+    });
+
+    slider.addEventListener('touchstart', (e) => {
+      isDragging = true;
+      isClick = true;
+      startX = e.touches[0].pageX;
+    });
+
+    slider.addEventListener('touchmove', (e) => {
+      if (!isDragging) return;
+      const x = e.touches[0].pageX;
+      const delta = x - startX;
+      if (Math.abs(delta) > 2) {
+        isClick = false;
+        rotationY += delta * -0.3;
+        slider.style.transform = `rotateX(-16deg) rotateY(${rotationY}deg)`;
+        startX = x;
+      }
+    });
+
+    slider.addEventListener('touchend', () => {
+      isDragging = false;
+    });
+
+    // Function to handle carousel movement (for parent iframe control)
+    window.moveCarousel = function(direction) {
+      const angle = 360 / parseInt(getComputedStyle(slider).getPropertyValue('--quantity'));
+      rotationY += direction * angle;
+      slider.style.transform = `rotateX(-16deg) rotateY(${rotationY}deg)`;
+    };
+  </script>
+</body>
+</html>

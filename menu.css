@@ -1,0 +1,234 @@
+/* Floating Menu Bar Styles */
+.floating-menu {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) scale(0.8);
+    opacity: 0.5;
+    display: flex;
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 30px;
+    padding: 10px 20px;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .floating-menu:hover {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+  }
+  
+  .menu-item {
+    margin: 0 15px;
+    font-family: 'Satoshi-Regular';
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    transition: all 0.2s ease;
+    padding: 5px 10px;
+    border-radius: 15px;
+  }
+  
+  .menu-item:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+  }
+  
+  @media (max-width: 1024px) {
+    .floating-menu {
+      padding: 8px 15px;
+      top: 10px;
+    }
+    
+    .menu-item {
+      font-size: 1rem;
+      margin: 0 8px;
+    }
+  }
+
+
+  /* Next Town Button Styles */
+.next-town-button {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 30px;
+  padding: 12px 20px;
+  color: white;
+  text-decoration: none;
+  font-family: 'Satoshi-Regular', sans-serif;
+  font-weight: bold;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transform: scale(0.9);
+  opacity: 0.5;
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.next-town-button i {
+  margin-left: 8px;
+  font-size: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.next-town-button:hover {
+  transform: scale(1);
+  opacity: 1;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.next-town-button:hover i {
+  transform: translateX(3px);
+}
+
+@media (max-width: 768px) {
+  .next-town-button {
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 15px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Town Navigation Buttons */
+.town-navigation {
+  position: fixed;
+  bottom: 30px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.nav-button {
+  display: flex;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 30px;
+  padding: 12px 20px;
+  color: white;
+  text-decoration: none;
+  font-family: 'Satoshi-Regular', sans-serif;
+  font-weight: bold;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transform: scale(0.9);
+  opacity: 0.5;
+  transition: all 0.3s ease;
+  pointer-events: auto;
+}
+
+.prev-town {
+  margin-left: 30px;
+}
+
+.next-town {
+  margin-right: 30px;
+}
+
+.nav-button i {
+  font-size: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.prev-town i {
+  margin-right: 8px;
+}
+
+.next-town i {
+  margin-left: 8px;
+}
+
+.nav-button:hover {
+  transform: scale(1);
+  opacity: 1;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.prev-town:hover i {
+  transform: translateX(-3px);
+}
+
+.next-town:hover i {
+  transform: translateX(3px);
+}
+
+@media (max-width: 768px) {
+  .nav-button {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+  }
+  
+  .prev-town {
+    margin-left: 15px;
+  }
+  
+  .next-town {
+    margin-right: 15px;
+  }
+}
+
+.contact-form {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.contact-form .form-group {
+  margin-bottom: 20px;
+}
+
+.contact-form label {
+  display: block;
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.contact-form input, .contact-form textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.contact-form input:focus, .contact-form textarea:focus {
+  border-color: #4a6fa5;
+  outline: none;
+}
+
+.contact-form textarea {
+  resize: vertical;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #4a6fa5;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+  background-color: #3a5a8f;
+}

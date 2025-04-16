@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Angono - Rizal Province</title>
+
+  <link rel="preload" href="Resources/Images/angono/item-A5.jpg" as="image">
+
+  <link href="fonts/satoshi.css" rel="stylesheet">
+  <link href="fonts/sentient.css" rel="stylesheet">
+  <link href="menu.css" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+    scroll-behavior: smooth;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    }
+
+
+    body {
+      font-family: 'Satoshi-Regular', sans-serif;
+      color: #222;
+      
+    }
+
+    h1, h2 {
+      font-family: 'Sentient', serif;
+    }
+    h3 {
+      font-family: 'Sentient', serif;
+      color: black;
+      
+    }
+
+    h4 {
+      font-family: 'Sentient', serif;
+      color: rgb(57, 57, 57);
+      text-align: left;
+    }
+
+    section {
+      scroll-snap-align: start;
+    }
+    .hero {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    overflow: hidden;
+    }
+
+
+    .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: url('Resources/Images/town1.jpg') center center / cover no-repeat;
+    filter: brightness(0.7); /* Optional */
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+    }
+
+    .hero-bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+    z-index: 1;
+    }
+        
+
+    .second-hero {
+    position: relative; /* Ensure it's not being shifted off-screen */
+    background: rgb(169, 169, 169);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 0; /* Reset any unwanted padding that might push things left */
+    padding-right: 0; /* Same for right side */
+    }
+
+    .hero h1 {
+      font-size: 100px;
+      text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .hero h2 {
+      font-size: 1.8rem;
+      margin-top: 10px;
+      color: #eee;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    .history-preview {
+      max-width: 1500px;
+      margin-top: 20px;
+      font-size: 30px;
+      padding: 0 20px;
+    }
+
+    .history-preview a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .wrapper {
+    transform-origin: center center;
+    transform: scale(0.75);
+    width: 70vw;
+    margin-left: 10%;
+    }
+
+    .bento {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 300px);
+    gap: 10px;
+    padding-left: 0; /* Ensure no padding pushing content left */
+    padding-right: 0; /* Same for right */
+    }
+
+
+    .bento-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    }
+
+    .bento-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease;
+      
+    }
+
+    .bento-item:hover img {
+      transform: scale(1.05);
+      
+    }
+
+    .bento-item::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+      pointer-events: none;
+    }
+
+    .bento-content {
+      position: absolute;
+      bottom: 15px;
+      left: 15px;
+      right: 25px;
+      color: white;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .bento-content .text {
+      font-size: 25px;
+      font-weight: 600;
+    }
+
+    .bento-content .arrow {
+      width: 32px;
+      height: 32px;
+      border: 2px solid white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 16px;
+      transform: rotate(-45deg);
+    }
+
+    .item-a { grid-column: 1 / 2; grid-row: 1 / 3; }
+    .item-b { grid-column: 2 / 3; grid-row: 1 / 2; }
+    .item-c { grid-column: 3 / 4; grid-row: 1 / 2; }
+    .item-d { grid-column: 2 / 4; grid-row: 2 / 3; }
+    .item-e { grid-column: 2 / 4 ; grid-row: 3 / 5 ; }
+
+    .item-text {
+      grid-column: 1 / 2;
+      grid-row: 3 / 5;
+      background-color: #fff;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .text-left h2 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    .text-left p {
+      margin-bottom: -30px;
+      font-size: 0.95rem;
+      color: #000000;
+    }
+
+    .text-right p {
+      margin-bottom: 15px;
+      font-size: 0.95rem;
+      color: #000000;
+      text-align: left;
+      line-height: 1.6;
+    }
+
+    .text-right ul {
+      margin-bottom: 15px;
+      padding-left: 20px;
+    }
+
+    .text-right li {
+      margin-bottom: 8px;
+    }
+
+    .text-right .info-block {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+    }
+
+    .hero h3 {
+        margin-bottom: 10px;
+    }
+
+    .info-block .icon-holder {
+      width: 50px;
+      height: 50px;
+      background-color: #000000;
+      border-radius: 10px;
+      flex-shrink: 0;
+    }
+
+    .info-block h3 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .info-block p {
+      margin: 5px 0 0;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    @media (max-width: 1024px) {
+      .bento {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+      }
+
+      .item-e,
+      .item-a,
+      .item-b,
+      .item-c,
+      .item-d,
+      .item-text {
+        grid-column: span 1 !important;
+        grid-row: auto !important;
+        height: 250px;
+      }
+
+      .item-text {
+        height: auto;
+        padding: 20px;
+      }
+      .item-d{
+        z-index: -1;
+      }
+    }
+
+    /* Limited Beat Animation (2x only) */
+    @keyframes beat-twice {
+      0%, 100% { transform: scale(1); }
+      25% { transform: scale(1.08); }
+      50% { transform: scale(1); }
+      75% { transform: scale(1.08); }
+    }
+
+    .scale-effect {
+      animation: beat-twice 2.4s ease-in-out forwards;
+      z-index: 5;
+    }
+
+    .mouse-icon {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: auto;
+    opacity: 0.8;
+    animation: float 2s ease-in-out infinite;
+    z-index: 2;
+    }
+
+    @keyframes float {
+    0%, 100% {
+        transform: translateX(-50%) translateY(0);
+    }
+    50% {
+        transform: translateX(-50%) translateY(10px);
+    }
+    }
+
+    .carousel1, .carousel2, .carousel3, .carousel4, .carousel5 {
+    display: none;
+    }
+
+    .carousel1, .carousel2, .carousel3, .carousel4, .carousel5 {
+      width: 30vw;
+      height: 100vh;
+      overflow: hidden;
+      position: absolute;
+      margin-left: 5%;
+    }
+
+    /* Carousel image styling and animation */
+    .carousel1 img, .carousel2 img, .carousel3 img, .carousel4 img, .carousel5 img {
+      width: 100%;
+      height: 100%;
+      animation: carousel-animation 10s infinite linear;
+    }
+
+    /* Keyframes for carousel animation */
+    @keyframes carousel-animation {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-100%); }
+    }
+
+    .carousel1 img, .carousel2 img, .carousel3 img, .carousel4 img, .carousel5 img {
+    width: 100%;
+    height: auto;
+    animation: carousel-animation 10s infinite linear;
+    animation-fill-mode: forwards;
+    }
+
+    /* Side grid for image carousel */
+    .side-grid {
+      position: absolute;
+      top: 0;
+      width: 25%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+    }
+
+    /* Left side grid styles */
+    .left-side {
+      left: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+
+    /* Right side grid styles */
+    .right-side {
+      right: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center top;
+      z-index: 10;
+      width: 31.3vw;
+      height: 100vh;
+      color: #000000;
+      background: white;
+      pointer-events: auto;
+    }
+
+    .right-side h2 {
+      color: #000000;
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+    }
+
+    .right-side h3 {
+      color: #333;
+      font-size: 1.4rem;
+      margin: 25px 0 10px;
+    }
+
+    .bento-item.active::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 4;
+    }
+
+    .bento-item.active-grid {
+      position: relative;
+    }
+
+    .bento-item.active-grid::before {
+  content: none !important;
+}
+
+    .bento-item.inactive {
+      pointer-events: none;
+      filter: brightness(0.5);
+    }
+
+
+    /* Keep overlay for inactive grids */
+.bento-item.inactive::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 4;
+  pointer-events: none;
+}
+
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 30px;
+      height: 30px;
+      background: rgba(0,0,0,0.5);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      font-size: 16px;
+      cursor: pointer;
+      z-index: 11;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .right-content {
+      padding: 40px;
+      height: 100%;
+      overflow-y: auto;
+    }
+
+    .right-content p {
+      margin-bottom: 15px;
+      line-height: 1.6;
+    }
+
+    .right-content ul {
+      margin-bottom: 15px;
+      padding-left: 20px;
+    }
+
+    .right-content li {
+      margin-bottom: 8px;
+    }
+
+    .home-button {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 50px;
+  height: 50px;
+  background: rgba(0,0,0,0.5);
+  color: white;
+  border-radius: 50%; /* Perfect circle */
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 100;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  overflow: hidden;
+}
+
+.home-button::before {
+  content: 'Home';
+  position: absolute;
+  left: 60px; /* Start outside the circle */
+  opacity: 0;
+  transition: all 0.3s ease;
+  font-size: 16px;
+  font-family: 'Satoshi-Regular', sans-serif;
+  white-space: nowrap;
+}
+
+.home-button:hover {
+  background: rgba(0,0,0,0.8);
+  width: 100px; /* Expanded width */
+  border-radius: 25px; /* Pill shape when expanded */
+  justify-content: flex-end; /* Push icon to right */
+  padding-right: 15px; /* Space for icon */
+}
+
+.home-button:hover::before {
+  opacity: 1;
+  left: 15px; /* Move text inside the expanded button */
+  transition-delay: 0.1s;
+}
+  </style>
+</head>
+<body>
+
+    <nav class="floating-menu">
+        <a href="home page.html" class="menu-item">Home</a>
+        <a href="about.html" class="menu-item">About</a>
+        <a href="about.html#contact" class="menu-item">Contacts</a>
+      </nav>
+        <a href="home page.html" class="home-button" onclick="scrollToTop()">⌂</a>
+
+        <a href="antipolo.html" class="next-town-button">
+            <span>Next Town</span>
+            <i class="fas fa-arrow-right"></i>
+        </a>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <h1>Angono, Rizal</h1>
+        <h2>The Art Capital of the Philippines</h2>
+        <div class="history-preview">
+        Angono, known as the "Art Capital of the Philippines," has a rich cultural heritage
+        that dates back to prehistoric times. The town is home to the Angono-Binangonan Petroglyphs,
+        considered the oldest known work of art in the Philippines, dating back to before 2000 BC. These petroglyphs consist of
+        127 human and animal figures engraved on a rock wall, believed to be associated with
+        <a onclick="scrollToHistory()">See more...</a>
+
+        <img src="Resources/Images/mouse-icon.png" alt="Scroll Down Icon" class="mouse-icon" />
+        </div>
+    </section>
+
+    <!-- Second Section -->
+    <section class="hero second-hero" id="history-section">
+      <!-- Side grids for carousel and text content -->
+      <div class="side-grid left-side" id="left-side">
+        <div class="carousel1">
+          <img src="Resources/Images/angono/item-A1.jpg" alt="Image 1" />
+          <img src="Resources/Images/angono/item-A2.jpg" alt="Image 2" />
+          <img src="Resources/Images/angono/item-A3.jpg" alt="Image 3" />
+        </div>
+
+        <div class="carousel2">
+          <img src="Resources/Images/angono/item-A10.jpg" alt="Image 10" />
+          <img src="Resources/Images/angono/item-A11.jpg" alt="Image 11" />
+          <img src="Resources/Images/angono/item-A12.jpg" alt="Image 12" />
+        </div>
+
+        <div class="carousel3">
+            <img src="Resources/Images/angono/item-A7.jpg" alt="Image 7" />
+            <img src="Resources/Images/angono/item-A8.jpg" alt="Image 8" />
+            <img src="Resources/Images/angono/item-A9.jpg" alt="Image 9" />
+        </div>
+
+        <div class="carousel4">
+            <img src="Resources/Images/angono/item-A4.jpg" alt="Image 4" />
+            <img src="Resources/Images/angono/item-A4.jpg" alt="Image 4" />
+            <img src="Resources/Images/angono/item-A4.jpg" alt="Image 4" />
+          </div>
+
+        <div class="carousel5">
+          <img src="Resources/Images/angono/item-A13.jpg" alt="Image 13" />
+          <img src="Resources/Images/angono/item-A14.jpg" alt="Image 14" />
+          <img src="Resources/Images/angono/item-A15.jpg" alt="Image 15" />
+        </div>
+      </div>
+      
+      <div class="side-grid right-side" id="right-side">
+        <button class="close-btn" id="close-btn">×</button>
+        <div class="right-content">
+          <div class="content-a">
+            <h2>Lakeside Views of Angono</h2>
+            <p>Angono's position along the northern shores of Laguna de Bay provides some of the most picturesque waterfront views in Rizal province. The lake, which is the largest in the Philippines, has shaped Angono's culture and economy for centuries. Local fishermen still use traditional techniques passed down through generations, casting nets from wooden bancas at dawn.</p>
+            <p>The lakeside area comes alive at sunset when the water reflects vibrant hues of orange and purple. This natural spectacle has inspired countless artworks by local painters. Several lakeside restaurants offer fresh seafood dishes like sinigang na hipon (shrimp sour soup) and inihaw na tilapia (grilled tilapia), allowing visitors to enjoy the view while sampling authentic flavors.</p>
+            <p>Environmental conservation efforts led by local artists and community groups help maintain the lake's beauty. Annual clean-up drives and ecological art installations raise awareness about protecting this vital natural resource.</p>
+          </div>
+          
+          <div class="content-b">
+            <h2>The Higantes Festival: A Cultural Spectacle</h2>
+            <p>Every November, Angono transforms into a vibrant parade ground for its famous Higantes Festival. The highlight are the enormous papier-mâché puppets (higantes) that tower over spectators, some reaching heights of 12-15 feet. These colorful figures originated as satirical representations of abusive Spanish hacienda owners during colonial times.</p>
+            <p>The festival honors San Clemente, the patron saint of fishermen, blending Catholic tradition with indigenous cultural expressions. Preparations begin months in advance, with different barangays competing to create the most impressive higantes. The parade features not just the giants but also marching bands, street dancers in elaborate costumes, and decorated floats.</p>
+            <p>Visitors can witness the intricate process of higantes-making in local workshops year-round. The art form has evolved to include contemporary themes while maintaining traditional techniques using bamboo frames, newspaper, and glue.</p>
+          </div>
+          
+          <div class="content-c">
+            <h2>Angono's Culinary Heritage</h2>
+            <p>Angono's food culture reflects its artistic soul and lakeside location. The town is particularly famous for sinaing na tulingan (braised tuna), cooked slowly in clay pots with banana leaves, garlic, and batwan fruit for a uniquely tangy flavor. This dish represents the perfect marriage of indigenous cooking techniques and Spanish influences.</p>
+            <p>Other must-try specialties include:</p>
+            <ul>
+              <li><strong>Crispy pata</strong> - Deep-fried pork knuckle with a golden crackling skin</li>
+              <li><strong>Inihaw na hito</strong> - Grilled catfish served with a special soy-vinegar dip</li>
+              <li><strong>Puto bumbong</strong> - Purple rice cakes steamed in bamboo tubes, a Christmas tradition</li>
+            </ul>
+            <p>The annual "Kainan sa Dapit-Hapon" food festival showcases these delicacies alongside cooking demonstrations and culinary competitions that highlight Angono's rich gastronomic traditions.</p>
+          </div>
+          
+          <div class="content-d">
+            <h2>Street Murals: Angono's Living Canvas</h2>
+            <p>Walking through Angono's streets feels like visiting an open-air gallery. The town's walls serve as canvases for breathtaking murals that depict local history, folklore, and scenes of daily life. These artworks aren't just decorations - they're visual stories that preserve community memories and values.</p>
+            <p>Notable mural sites include:</p>
+            <ul>
+              <li>The <strong>Botong Francisco Mural</strong> on Doña Aurora Street, recreating the National Artist's iconic works</li>
+              <li>The <strong>Fishermen's Wall</strong> along Laguna de Bay shoreline, celebrating the town's fishing heritage</li>
+              <li>The <strong>Children's Art Corridor</strong> featuring works by young Angono artists</li>
+            </ul>
+            <p>Local artists frequently organize mural-painting workshops where visitors can contribute to community art projects. The municipal government supports these initiatives through the "Pintura Angono" program, ensuring the town's artistic legacy continues to flourish.</p>
+          </div>
+          
+          <div class="content-e">
+            <h2>Angono: The Art Capital's Historical Journey</h2>
+            <p>Angono's artistic legacy stretches back millennia, evidenced by the Angono-Binangonan Petroglyphs discovered in 1965 by National Artist Carlos "Botong" Francisco. These ancient rock carvings, dating back to circa 3000 BC, feature 127 human and animal figures and represent the Philippines' oldest known work of art.</p>
+            
+            <h3>Colonial Era Development</h3>
+            <p>During Spanish rule, Angono became known for its skilled artisans who created religious sculptures and church decorations. The town's St. Clement Parish Church houses centuries-old santos (saint statues) carved by local craftsmen. This religious art tradition evolved into the vibrant contemporary scene Angono is famous for today.</p>
+            
+            <h3>Birthplace of National Artists</h3>
+            <p>Angono takes immense pride as the hometown of two Philippine National Artists:
+              <ul>
+                <li><strong>Carlos "Botong" Francisco</strong> (1912-1969) - Master muralist who pioneered the Filipino imagery in visual arts</li>
+                <li><strong>Maestro Lucio San Pedro</strong> (1913-2002) - Celebrated composer known as the "Father of Philippine Impressionist Music"</li>
+              </ul>
+            </p>
+            
+            <h3>Modern Cultural Renaissance</h3>
+            <p>Today, Angono sustains its artistic reputation through numerous galleries, the annual Art Festival, and community art programs. The Blanco Family Museum showcases the works of the renowned Blanco family of painters, while the Nemiranda Art House offers workshops and artist residencies. Angono's creative energy continues to inspire new generations of Filipino artists.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="wrapper">
+        <div class="bento">
+          <!-- Text block (static) -->
+          <section class="item-text" id="history-paragraph">
+            <div class="text-left">
+              <h3>The Art Capital of the Philippines</h3>
+              <p>Angono isn't just a town—it's a canvas of stories, culture, and creativity that inspires locals and travelers alike.</p>
+            </div>
+            <div class="text-right">
+              <div class="info-block">
+                <div class="icon-holder"></div>
+                <div>
+                  <h4>Home of National Artists</h4>
+                  <p>From Botong Francisco to Lucio San Pedro, legends in both art and music call Angono home.</p>
+                </div>
+              </div>
+              <div class="info-block">
+                <div class="icon-holder"></div>
+                <div>
+                  <h4>Higantes Festival</h4>
+                  <p>Parade of giant papier-mâché puppets showing the community's creativity and joy.</p>
+                </div>
+              </div>
+              <div class="info-block">
+                <div class="icon-holder"></div>
+                <div>
+                  <h4>Art Galleries & Museums</h4>
+                  <p>Discover family-run galleries and heritage museums that make Angono a true art haven.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Other bento items -->
+          <div class="bento-item item-a" id="grid-A">
+            <img src="Resources/Images/angono/item-A.jpg" alt="Angono Image A" />
+            <div class="bento-content">
+              <div class="text">Lakeside View</div>
+              <div class="arrow">→</div>
+            </div>
+          </div>
+
+          <div class="bento-item item-b" id="grid-B">
+            <img src="Resources/Images/angono/item-A12.jpg" alt="Angono Image B" />
+            <div class="bento-content">
+              <div class="text">Higantes Parade</div>
+              <div class="arrow">→</div>
+            </div>
+          </div>
+
+          <div class="bento-item item-c" id="grid-C">
+            <img src="Resources/Images/angono/item-A7.jpg" alt="Angono Image C" />
+            <div class="bento-content">
+              <div class="text">Local Food Fest</div>
+              <div class="arrow">→</div>
+            </div>
+          </div>
+
+          <div class="bento-item item-d" id="grid-D">
+            <img src="Resources/Images/angono/item-E.jpg" alt="Angono Image D" />
+            <div class="bento-content">
+              <div class="text">Street Murals</div>
+              <div class="arrow">→</div>
+            </div>
+          </div>
+
+          <!-- Animated grid first -->
+          <div class="bento-item item-e" id="grid-E">
+            <img src="Resources/Images/angono/item-A13.jpg" alt="Angono Image E" />
+            <div class="bento-content">
+              <div class="text">History</div>
+              <div class="arrow">→</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  <script>
+    function scrollToHistory() {
+      const section = document.getElementById("history-section");
+      const historyGrid5 = document.getElementById("grid-E");
+
+      section.scrollIntoView({ behavior: "smooth" });
+
+      // Reset and trigger animation (force reflow)
+      historyGrid5.classList.remove("scale-effect");
+      void historyGrid5.offsetWidth; // reflow
+      historyGrid5.classList.add("scale-effect");
+
+
+      function setupCarousels() {
+  const carousels = document.querySelectorAll('[class^="carousel"]');
+  carousels.forEach(carousel => {
+    // Clone all images and append them
+    const images = carousel.querySelectorAll('img');
+    images.forEach(img => {
+      const clone = img.cloneNode(true);
+      carousel.appendChild(clone);
+    });
+    
+    // Double the animation duration since we doubled the content
+    carousel.style.animationDuration = '20s';
+    });
+    }
+
+    // Call this in your DOMContentLoaded event
+    document.addEventListener("DOMContentLoaded", function() {
+    setupCarousels();
+    });
+
+    function scrollToTop() {
+    window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+    });
+    return false; // Prevent default anchor behavior
+    }
+
+
+    }
+
+    function hideAllCarousels() {
+      const carousels = document.querySelectorAll('.carousel1, .carousel2, .carousel3, .carousel4, .carousel5');
+      carousels.forEach(c => c.style.display = 'none');
+    }
+
+    function showCarousel(number) {
+      hideAllCarousels();
+      const carousel = document.querySelector('.carousel' + number);
+      if (carousel) {
+        carousel.style.display = 'block';
+      }
+    }
+
+    function hideAllContent() {
+      const contents = document.querySelectorAll('.right-content > div');
+      contents.forEach(c => c.style.display = 'none');
+    }
+
+    function showContent(letter) {
+      hideAllContent();
+      const content = document.querySelector('.content-' + letter);
+      if (content) {
+        content.style.display = 'block';
+      }
+    }
+
+// Main functionality
+document.addEventListener("DOMContentLoaded", function() {
+  const bentoItems = document.querySelectorAll('.bento-item');
+  const leftSide = document.getElementById('left-side');
+  const rightSide = document.getElementById('right-side');
+  const closeBtn = document.getElementById('close-btn');
+  let activeItem = null;
+
+  // Initialize - hide all carousels and content
+  hideAllCarousels();
+  hideAllContent();
+  leftSide.style.opacity = '0';
+  rightSide.style.opacity = '0';
+
+  // Add click event to each bento item
+  bentoItems.forEach((item, index) => {
+    item.addEventListener('click', function() {
+      // If clicking the active item, close it
+      if (activeItem === this) {
+        closeActiveItem();
+        return;
+      }
+
+      // If another item is active, ignore click
+      if (activeItem) return;
+
+      // Set this item as active
+      activeItem = this;
+      
+      // Show overlay on other items only
+      bentoItems.forEach(bento => {
+        if (bento !== activeItem) {
+          bento.classList.add('inactive');
+        } else {
+          bento.classList.remove('inactive');
+        }
+      });
+
+      // Add active class to clicked item
+      this.classList.add('active-grid');
+
+      // Show side grids
+      leftSide.style.opacity = '1';
+      rightSide.style.opacity = '1';
+
+      // Show corresponding carousel and content
+      showCarousel(index + 1);
+      showContent(String.fromCharCode(97 + index)); // a, b, c, d, e
+    });
+  });
+
+
+      // Close button functionality
+      closeBtn.addEventListener('click', closeActiveItem);
+
+      // Function to close the active item
+      function closeActiveItem() {
+        if (!activeItem) return;
+
+        // Hide side grids
+        leftSide.style.opacity = '0';
+        rightSide.style.opacity = '0';
+
+        // Remove active classes
+        activeItem.classList.remove('active-grid');
+        
+        // Remove inactive class from other items
+        bentoItems.forEach(bento => {
+          bento.classList.remove('inactive');
+        });
+
+        // Hide carousels
+        hideAllCarousels();
+        hideAllContent();
+
+        // Reset active item
+        activeItem = null;
+      }
+
+      // Close when clicking outside the right side content
+      rightSide.addEventListener('click', function(e) {
+        if (e.target === this) {
+          closeActiveItem();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

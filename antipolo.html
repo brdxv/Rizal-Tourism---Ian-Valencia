@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Antipolo - Rizal Province</title>
+
+  <link href="fonts/satoshi.css" rel="stylesheet">
+  <link href="fonts/sentient.css" rel="stylesheet">
+
+  <link href="menu.css" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+    scroll-behavior: smooth;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    }
+
+
+    body {
+      font-family: 'Satoshi-Regular', sans-serif;
+      color: #222;
+      
+    }
+
+    h1, h2 {
+      font-family: 'Sentient', serif;
+    }
+    h3 {
+      font-family: 'Sentient', serif;
+      color: black;
+      
+    }
+
+    h4 {
+      font-family: 'Sentient', serif;
+      color: rgb(57, 57, 57);
+      text-align: left;
+    }
+
+    section {
+      scroll-snap-align: start;
+    }
+    .hero {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    overflow: hidden;
+    }
+
+
+    .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: url('Resources/Images/town2.jpg') center center / cover no-repeat;
+    filter: brightness(0.7); /* Optional */
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+    }
+
+    .hero-bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+    z-index: 1;
+    }
+        
+
+    .second-hero {
+    position: relative; /* Ensure it's not being shifted off-screen */
+    background: rgb(169, 169, 169);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 0; /* Reset any unwanted padding that might push things left */
+    padding-right: 0; /* Same for right side */
+    }
+
+    .hero h1 {
+      font-size: 100px;
+      text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .hero h2 {
+      font-size: 1.8rem;
+      margin-top: 10px;
+      color: #eee;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    .history-preview {
+      max-width: 1500px;
+      margin-top: 20px;
+      font-size: 30px;
+      padding: 0 20px;
+    }
+
+    .history-preview a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .wrapper {
+    transform-origin: center center;
+    transform: scale(0.75);
+    width: 70vw;
+    margin-left: 10%;
+    }
+
+    .bento {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 300px);
+    gap: 10px;
+    padding-left: 0; /* Ensure no padding pushing content left */
+    padding-right: 0; /* Same for right */
+    }
+
+
+    .bento-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    }
+
+    .bento-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease;
+      
+    }
+
+    .bento-item:hover img {
+      transform: scale(1.05);
+      
+    }
+
+    .bento-item::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+      pointer-events: none;
+    }
+
+    .bento-content {
+      position: absolute;
+      bottom: 15px;
+      left: 15px;
+      right: 25px;
+      color: white;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .bento-content .text {
+      font-size: 25px;
+      font-weight: 600;
+    }
+
+    .bento-content .arrow {
+      width: 32px;
+      height: 32px;
+      border: 2px solid white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 16px;
+      transform: rotate(-45deg);
+    }
+
+    .item-a { grid-column: 1 / 2; grid-row: 1 / 3; }
+    .item-b { grid-column: 2 / 3; grid-row: 1 / 2; }
+    .item-c { grid-column: 3 / 4; grid-row: 1 / 2; }
+    .item-d { grid-column: 2 / 4; grid-row: 2 / 3; }
+    .item-e { grid-column: 2 / 4 ; grid-row: 3 / 5 ; }
+
+    .item-text {
+      grid-column: 1 / 2;
+      grid-row: 3 / 5;
+      background-color: #fff;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .text-left h2 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    .text-left p {
+      margin-bottom: -30px;
+      font-size: 0.95rem;
+      color: #000000;
+    }
+
+    .text-right p {
+      margin-bottom: -30px;
+      font-size: 0.95rem;
+      color: #000000;
+      text-align: left;
+      
+    }
+
+    .text-right .info-block {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+    }
+
+    .hero h3 {
+        margin-bottom: 10px;
+    }
+
+    .info-block .icon-holder {
+      width: 50px;
+      height: 50px;
+      background-color: #000000;
+      border-radius: 10px;
+      flex-shrink: 0;
+    }
+
+    .info-block h3 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .info-block p {
+      margin: 5px 0 0;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    @media (max-width: 1024px) {
+      .bento {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+      }
+
+      .item-e,
+      .item-a,
+      .item-b,
+      .item-c,
+      .item-d,
+      .item-text {
+        grid-column: span 1 !important;
+        grid-row: auto !important;
+        height: 250px;
+      }
+
+      .item-text {
+        height: auto;
+        padding: 20px;
+      }
+      .item-d{
+        z-index: -1;
+      }
+    }
+
+    /* Limited Beat Animation (2x only) */
+    @keyframes beat-twice {
+      0%, 100% { transform: scale(1); }
+      25% { transform: scale(1.08); }
+      50% { transform: scale(1); }
+      75% { transform: scale(1.08); }
+    }
+
+    .scale-effect {
+      animation: beat-twice 2.4s ease-in-out forwards;
+      z-index: 5;
+    }
+
+    .mouse-icon {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: auto;
+    opacity: 0.8;
+    animation: float 2s ease-in-out infinite;
+    z-index: 2;
+    }
+
+    @keyframes float {
+    0%, 100% {
+        transform: translateX(-50%) translateY(0);
+    }
+    50% {
+        transform: translateX(-50%) translateY(10px);
+    }
+    }
+
+    .carousel1, .carousel2, .carousel3, .carousel4, .carousel5 {
+    display: none;
+    }
+
+    .carousel1, .carousel2, .carousel3, .carousel4, .carousel5 {
+      width: 30vw;
+      height: 100vh;
+      overflow: hidden;
+      position: absolute;
+      margin-left: 5%;
+    }
+
+    /* Carousel image styling and animation */
+    .carousel1 img, .carousel2 img, .carousel3 img, .carousel4 img, .carousel5 img {
+      width: 100%;
+      height: auto;
+      animation: carousel-animation 10s infinite linear;
+    }
+
+    /* Keyframes for carousel animation */
+    @keyframes carousel-animation {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-100%); }
+    }
+
+    .carousel1 img, .carousel2 img, .carousel3 img, .carousel4 img, .carousel5 img {
+    width: 100%;
+    height: auto;
+    animation: carousel-animation 10s infinite linear;
+    animation-fill-mode: forwards;
+    }
+
+    /* Side grid for image carousel */
+    .side-grid {
+      position: absolute;
+      top: 0;
+      width: 25%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+    }
+
+    /* Left side grid styles */
+    .left-side {
+      left: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+
+    /* Right side grid styles */
+    .right-side {
+      right: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center top;
+      z-index: 10;
+      width: 31.3vw;
+      height: 100vh;
+      color: #000000;
+      background: white;
+      pointer-events: auto;
+    }
+
+    .right-side h2 {
+      color: #000000;
+      font-size: large;
+    }
+
+    .bento-item.active::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 4;
+    }
+
+    .bento-item.active-grid {
+      position: relative;
+    }
+
+    .bento-item.active-grid::before {
+  content: none !important;
+}
+
+    .bento-item.inactive {
+      pointer-events: none;
+      filter: brightness(0.5);
+    }
+
+
+    /* Keep overlay for inactive grids */
+.bento-item.inactive::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 4;
+  pointer-events: none;
+}
+
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 30px;
+      height: 30px;
+      background: rgba(0,0,0,0.5);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      font-size: 16px;
+      cursor: pointer;
+      z-index: 11;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .right-content {
+      padding: 40px;
+      height: 100%;
+      overflow-y: auto;
+    }
+
+    .home-button {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 50px;
+  height: 50px;
+  background: rgba(0,0,0,0.5);
+  color: white;
+  border-radius: 50%; /* Perfect circle */
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 100;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  overflow: hidden;
+}
+
+.home-button::before {
+  content: 'Home';
+  position: absolute;
+  left: 60px; /* Start outside the circle */
+  opacity: 0;
+  transition: all 0.3s ease;
+  font-size: 16px;
+  font-family: 'Satoshi-Regular', sans-serif;
+  white-space: nowrap;
+}
+
+.home-button:hover {
+  background: rgba(0,0,0,0.8);
+  width: 100px; /* Expanded width */
+  border-radius: 25px; /* Pill shape when expanded */
+  justify-content: flex-end; /* Push icon to right */
+  padding-right: 15px; /* Space for icon */
+}
+
+.home-button:hover::before {
+  opacity: 1;
+  left: 15px; /* Move text inside the expanded button */
+  transition-delay: 0.1s;
+}
+
+  </style>
+</head>
+<body>
+  <nav class="floating-menu">
+    <a href="home page.html" class="menu-item">Home</a>
+    <a href="about.html" class="menu-item">About</a>
+    <a href="about.html#contact" class="menu-item">Contacts</a>
+  </nav>
+        <a href="home page.html" class="home-button" onclick="scrollToTop()">⌂</a>
+
+                    <!-- Navigation Buttons -->
+        <div class="town-navigation">
+          <a href="angono.html" class="nav-button prev-town">
+            <i class="fas fa-arrow-left"></i>
+            <span>Previous Town</span>
+          </a>
+          
+          <a href="binangonan.html" class="nav-button next-town">
+            <span>Next Town</span>
+            <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <h1>Antipolo, Rizal</h1>
+        <h2>The Pilgrimage Capital of the Philippines</h2>
+        <div class="history-preview">
+        Antipolo's history dates back to before 1578, initially inhabited by indigenous tribes such as the Dumagats, Tagals, Indians, and Aetas. The city is named after the Tipolo trees that once thrived in the area. Spanish missionaries established a mission town here, and it became a significant religious center with the enshrinement of the image of the Our Lady of Peace and Good Voyage, a Black Madonna from Mexico.
+        <a onclick="scrollToHistory()">See more...</a>
+
+        <img src="Resources/Images/mouse-icon.png" alt="Scroll Down Icon" class="mouse-icon" />
+        </div>
+    </section>
+
+    <!-- Second Section -->
+    <section class="hero second-hero" id="history-section">
+      <!-- Side grids for carousel and text content -->
+      <div class="side-grid left-side" id="left-side">
+        <div class="carousel1">
+          <img src="Resources/Images/antipolo/item-A1.jpg" alt="Image 1" />
+          <img src="Resources/Images/antipolo/item-A2.jpg" alt="Image 2" />
+          <img src="Resources/Images/antipolo/item-A3.jpg" alt="Image 3" />
+        </div>
+
+        <div class="carousel2">
+          <img src="Resources/Images/antipolo/item-A4.jpg" alt="Image 4" />
+          <img src="Resources/Images/antipolo/item-A5.jpg" alt="Image 5" />
+          <img src="Resources/Images/antipolo/item-A6.jpg" alt="Image 6" />
+        </div>
+
+        <div class="carousel3">
+          <img src="Resources/Images/antipolo/item-A7.jpg" alt="Image 7" />
+          <img src="Resources/Images/antipolo/item-A8.jpg" alt="Image 8" />
+          <img src="Resources/Images/antipolo/item-A9.jpg" alt="Image 9" />
+        </div>
+
+        <div class="carousel4">
+          <img src="Resources/Images/antipolo/item-A10.jpg" alt="Image 10" />
+          <img src="Resources/Images/antipolo/item-A11.jpg" alt="Image 11" />
+          <img src="Resources/Images/antipolo/item-A12.jpg" alt="Image 12" />
+        </div>
+
+        <div class="carousel5">
+          <img src="Resources/Images/antipolo/item-A13.jpg" alt="Image 13" />
+          <img src="Resources/Images/antipolo/item-A14.jpg" alt="Image 14" />
+          <img src="Resources/Images/antipolo/item-A15.jpg" alt="Image 15" />
+        </div>
+      </div>
+      
+      <div class="side-grid right-side" id="right-side">
+        <button class="close-btn" id="close-btn">×</button>
+        <div class="right-content">
+          <div class="content-a">
+            <h2>Antipolo Cathedral</h2>
+            <p>The Antipolo Cathedral, officially known as the National Shrine of Our Lady of Peace and Good Voyage, is one of the most significant pilgrimage
+              churches in the Philippines. Located in Antipolo City, Rizal, it serves as the home of the revered 17th-century wooden image of the Blessed Virgin Mary, Nuestra Señora
+              de la Paz y Buen Viaje (Our Lady of Peace and Good Voyage), brought from Mexico in 1626 by Governor-General Juan Niño de Tabora.
+              The image has long been believed to provide protection for travelers, especially seafarers, which is why it became a symbol of safe journeys for Filipino pilgrims.
+
+              The original church, made of wood, was destroyed during the Chinese uprising in 1639. Rebuilt several
+              times due to earthquakes and wars, the present cathedral structure was completed in the 1950s and continues to draw
+              thousands of devotees, especially during the Maytime pilgrimage season. Its architecture features a mix of modern and traditional elements, creating a solemn atmosphere ideal for reflection and prayer.
+              As a major religious site, the Antipolo Cathedral symbolizes faith, resilience, and Filipino devotion. It was declared
+              a national shrine in 1954 and continues to play a vital role in the spiritual life of Catholics across the country.</p>
+          </div>
+          <div class="content-b">
+            <h2>Maytime Festival</h2>
+            <p>The highlight of Antipolo's religious calendar, featuring solemn processions and the colorful Santacruzan.
+              This festival celebrates the Feast of Our Lady of Peace and Good Voyage and transforms the city into a vibrant hub of faith and tradition, attracting devotees from across the country. The Antipolo Maytime Festival is a vibrant, month-long celebration held every May in Antipolo City, Rizal, Philippines. Rooted in deep religious devotion and rich cultural heritage, the festival honors the Our Lady of Peace and Good Voyage, drawing thousands of pilgrims and tourists to the city.​
+
+              The festivities commence on May 1 with the SuMaKaH Festival—an acronym for Suman (rice cake), Mangga (mango), Kasoy (cashew), and Hamaka (hammock)—highlighting Antipolo's renowned local products and traditional mode of transport. The opening day features the "Alay Lakad," a penitential walk culminating in a dawn Mass at the Antipolo Cathedral, marking the start of the pilgrimage season .​
+              
+              Throughout May, the city comes alive with a series of events, including street dancing competitions, grand parades, and cultural performances. Participants don colorful costumes and perform choreographed dances to the city's official song, "Tayo Na Sa Antipolo," showcasing the community's talent and unity . Traditional religious activities such as the Santacruzan and Flores de Mayo processions are also integral parts of the celebration .</p>
+          </div>
+          <div class="content-c">
+            <h2>Local Delicacies</h2>
+            <p>Antipolo is famous for its suman (sticky rice cake), kasoy (cashew nuts), and fresh mangoes. These are popular pasalubong (souvenirs) sold by vendors near the cathedral. The city's elevated location also makes it ideal for coffee plantations producing high-quality beans. Antipolo is not just known for its pilgrimage sites and scenic views, but also for its rich and flavorful local delicacies that reflect the city's culture and identity. Among the most famous treats is suman sa ibus, a sticky rice delicacy wrapped in coconut leaves, often paired with ripe mangoes and sprinkled with sugar or latik. It's a staple pasalubong item for pilgrims and tourists alike, especially during the Maytime Festival.
+
+              Another iconic delicacy is kasoy or roasted cashew nuts. Antipolo is one of the country’s top producers of high-quality cashews, often sold in plastic jars or pouches by local vendors near the cathedral or city market. These are perfect snacks or gifts, known for their crisp texture and nutty richness.
+              
+              Also popular is mango, particularly the sweet and juicy varieties grown in nearby areas. Suman, mango, and kasoy make up the “SuMaKa” trio celebrated in the city’s SuMaKaH Festival every May 1.
+              
+              Aside from these, you’ll find locally made vinegar, coco jam, and other preserved products sold in Antipolo’s markets. These delicacies not only satisfy the taste buds but also preserve traditional recipes passed down through generations, making Antipolo a must-visit for food lovers and cultural enthusiasts.</p>
+          </div>
+          <div class="content-d">
+            <h2>Hinulugang Taktak Falls</h2>
+            <p>Once a premier tourist destination, these natural waterfalls have been rehabilitated and remain a popular picnic spot. The name comes from the legend of a church bell (taktak) that was thrown (hinulog) into the falls to stop its loud ringing that disturbed the townspeople. Hinulugang Taktak is one of the most iconic natural attractions in Antipolo City, Rizal. Its name, which means “where the bell was dropped,” comes from a local legend dating back to the Spanish colonial period. According to the story, a church bell that rang too loudly during Mass was thrown into the waterfall to restore peace and quiet to the town, hence the name.
+
+              The waterfall stands about 21.5 meters high and 25.8 meters wide, surrounded by lush greenery and a tranquil landscape. It has long been a favorite destination for both locals and tourists looking for a peaceful escape from city life. Due to its cultural and natural significance, Hinulugang Taktak was declared a National Park in 1990 and later a Protected Landscape.
+              
+              Though it suffered from pollution and neglect in past decades, efforts have been made to rehabilitate and restore the area. Today, the park features hanging bridges, nature trails, viewing decks, picnic areas, and even adventure spots like a spider web platform and wall-climbing facilities.
+              Hinulugang Taktak is not only a symbol of Antipolo’s natural beauty, but also a reminder of the city’s deep cultural roots and its commitment to preserving the environment.</p>
+          </div>
+          <div class="content-e">
+            <h2>Historical Content of Antipolo</h2>
+            <p>Antipolo serves as the provincial capital of Rizal since 2020, having been an administrative center since 2009 with the capitol located in the city. The city's history as a pilgrimage site dates back to the Spanish colonial period when the image of Our Lady of Peace and Good Voyage was enshrined here. ANTIPOLO…The City on the mountain ridges east of Manila where the sun begins to shine. The City whose name was derived from the Tipolo trees growing indigenously on its land…trees with broad leaves that provide shade while gently fanning in the soothing breeze. Antipolo, the City of pilgrims and contemplatives, tourists and traders, artists and artisans.
+
+              Rich in cultural and historical heritage, Antipolo’s history dates way before the first Franciscan Missionary recorded its work in 1578. The land was home to indigenous tribes as the Dumagats, Tagals, Indians and Aetas. Its virgin forests of varied tropical trees were also nests to a diverse wildlife. Its rich water tables gushed forth as springs and waterfalls.
+              
+              As the missionaries relentlessly pursued their ‘Christianization’ campaign, these natives desiring to keep their own way of life moved themselves into the hinterlands of neighboring mountains. Migrants supporting the missions came to settle and the semblance of a mission town firmly established itself and grew to the proportions it is today. The Jesuits came so did the Recollects.
+              
+              host of other religious congregations (both male and female) followed suit and took residence in this forested mountain whose cool breeze and verdant sceneries primed them into contemplative unions with the Creator. Word spread. The laity from lower lands also wanted a share of this haven. More so when the famed image of the Blessed Virgin Mary sculpted from a dark hardwood of Mexico was permanently enshrined in Antipolo.
+              
+              Soon enough a shrine (evolving to Cathedral stature through the years) was built for this venerated image to allow all believers to ventilate their aspirations to her. As more pilgrims came, many were enamored to take residence in this pleasant town and established services related to pilgrims’ needs. The trek up continued…the population grew while services expanded to the level of being a city. By February 13, 1998, Antipolo was promulgated into a city when, then President Fidel V. Ramos signed its bill into law.</p>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="wrapper">
+        <div class="bento">
+          <!-- Text block (static) -->
+          <section class="item-text" id="history-paragraph">
+            <div class="text-left">
+              <h3>The Pilgrimage Capital</h3>
+              <p>Antipolo is where faith meets nature, offering spiritual solace and breathtaking views that have drawn pilgrims for centuries.</p>
+            </div>
+            <div class="text-right">
+              <div class="info-block">
+                <div class="icon-holder"></div>
+                <div>
+                  <h4>Our Lady of Antipolo</h4>
+                  <p>The venerated image brought from Mexico in 1626 has made Antipolo the country's pilgrimage capital.</p>
+                </div>
+              </div>
+              <div class="info-block">
+                <div class="icon-holder"></div>
+                <div>
+                  <h4>Maytime Festival</h4>
+                  <p>Annual religious celebration featuring processions and the colorful Santacruzan pageant.</p>
+                </div>
+              </div>
+              <div class="info-block">
+                <div class="icon-holder"></div>
+                <div>
+                  <h4>Nature & Art</h4>
+                  <p>From Hinulugang Taktak Falls to Pinto Art Museum, Antipolo blends spirituality with natural and artistic beauty.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Other bento items -->
+          <div class="bento-item item-a" id="grid-A">
+            <img src="Resources/Images/antipolo/item-A1.jpg" alt="Antipolo Image A" />
+            <div class="bento-content">
+              <div class="text">Antipolo Cathedral</div>
+              <div class="arrow">→</div>
+            </div>
+          </div>
+
+          <div class="bento-item item-b" id="grid-B">
+            <img src="Resources/Images/antipolo/item-A4.jpg" alt="Antipolo Image B" />
+            <div class="bento-content">
+              <div class="text">Maytime Festival</div>
+              <div class="arrow">→</div>
+            </div>
+          </div>
+
+          <div class="bento-item item-c" id="grid-C">
+            <img src="Resources/Images/antipolo/item-A7.jpg" alt="Antipolo Image C" />
+            <div class="bento-content">
+              <div class="text">Local Delicacies</div>
+              <div class="arrow">→</div>
+            </div>
+          </div>
+
+          <div class="bento-item item-d" id="grid-D">
+            <img src="Resources/Images/antipolo/item-A10.jpg" alt="Antipolo Image D" />
+            <div class="bento-content">
+              <div class="text">Hinulugang Taktak</div>
+              <div class="arrow">→</div>
+            </div>
+          </div>
+
+          <!-- Animated grid first -->
+          <div class="bento-item item-e" id="grid-E">
+            <img src="Resources/Images/antipolo/item-A13.jpg" alt="Antipolo Image E" />
+            <div class="bento-content">
+              <div class="text">History</div>
+              <div class="arrow">→</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  <script>
+    function scrollToHistory() {
+      const section = document.getElementById("history-section");
+      const historyGrid5 = document.getElementById("grid-E");
+
+      section.scrollIntoView({ behavior: "smooth" });
+
+      // Reset and trigger animation (force reflow)
+      historyGrid5.classList.remove("scale-effect");
+      void historyGrid5.offsetWidth; // reflow
+      historyGrid5.classList.add("scale-effect");
+
+
+      function setupCarousels() {
+  const carousels = document.querySelectorAll('[class^="carousel"]');
+  carousels.forEach(carousel => {
+    // Clone all images and append them
+    const images = carousel.querySelectorAll('img');
+    images.forEach(img => {
+      const clone = img.cloneNode(true);
+      carousel.appendChild(clone);
+    });
+    
+    // Double the animation duration since we doubled the content
+    carousel.style.animationDuration = '20s';
+    });
+    }
+
+    // Call this in your DOMContentLoaded event
+    document.addEventListener("DOMContentLoaded", function() {
+    setupCarousels();
+    });
+
+    function scrollToTop() {
+    window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+    });
+    return false; // Prevent default anchor behavior
+    }
+
+
+    }
+
+    function hideAllCarousels() {
+      const carousels = document.querySelectorAll('.carousel1, .carousel2, .carousel3, .carousel4, .carousel5');
+      carousels.forEach(c => c.style.display = 'none');
+    }
+
+    function showCarousel(number) {
+      hideAllCarousels();
+      const carousel = document.querySelector('.carousel' + number);
+      if (carousel) {
+        carousel.style.display = 'block';
+      }
+    }
+
+    function hideAllContent() {
+      const contents = document.querySelectorAll('.right-content > div');
+      contents.forEach(c => c.style.display = 'none');
+    }
+
+    function showContent(letter) {
+      hideAllContent();
+      const content = document.querySelector('.content-' + letter);
+      if (content) {
+        content.style.display = 'block';
+      }
+    }
+
+// Main functionality
+document.addEventListener("DOMContentLoaded", function() {
+  const bentoItems = document.querySelectorAll('.bento-item');
+  const leftSide = document.getElementById('left-side');
+  const rightSide = document.getElementById('right-side');
+  const closeBtn = document.getElementById('close-btn');
+  let activeItem = null;
+
+  // Initialize - hide all carousels and content
+  hideAllCarousels();
+  hideAllContent();
+  leftSide.style.opacity = '0';
+  rightSide.style.opacity = '0';
+
+  // Add click event to each bento item
+  bentoItems.forEach((item, index) => {
+    item.addEventListener('click', function() {
+      // If clicking the active item, close it
+      if (activeItem === this) {
+        closeActiveItem();
+        return;
+      }
+
+      // If another item is active, ignore click
+      if (activeItem) return;
+
+      // Set this item as active
+      activeItem = this;
+      
+      // Show overlay on other items only
+      bentoItems.forEach(bento => {
+        if (bento !== activeItem) {
+          bento.classList.add('inactive');
+        } else {
+          bento.classList.remove('inactive');
+        }
+      });
+
+      // Add active class to clicked item
+      this.classList.add('active-grid');
+
+      // Show side grids
+      leftSide.style.opacity = '1';
+      rightSide.style.opacity = '1';
+
+      // Show corresponding carousel and content
+      showCarousel(index + 1);
+      showContent(String.fromCharCode(97 + index)); // a, b, c, d, e
+    });
+  });
+
+
+      // Close button functionality
+      closeBtn.addEventListener('click', closeActiveItem);
+
+      // Function to close the active item
+      function closeActiveItem() {
+        if (!activeItem) return;
+
+        // Hide side grids
+        leftSide.style.opacity = '0';
+        rightSide.style.opacity = '0';
+
+        // Remove active classes
+        activeItem.classList.remove('active-grid');
+        
+        // Remove inactive class from other items
+        bentoItems.forEach(bento => {
+          bento.classList.remove('inactive');
+        });
+
+        // Hide carousels
+        hideAllCarousels();
+        hideAllContent();
+
+        // Reset active item
+        activeItem = null;
+      }
+
+      // Close when clicking outside the right side content
+      rightSide.addEventListener('click', function(e) {
+        if (e.target === this) {
+          closeActiveItem();
+        }
+      });
+    });
+
+// Close button functionality
+closeBtn.addEventListener('click', closeActiveItem);
+
+// Function to close the active item
+function closeActiveItem() {
+  if (!activeItem) return;
+
+  // Hide side grids
+  leftSide.style.opacity = '0';
+  rightSide.style.opacity = '0';
+
+  // Remove active classes
+  activeItem.classList.remove('active-grid');
+  
+  // Remove inactive class from other items
+  bentoItems.forEach(bento => {
+    bento.classList.remove('inactive');
+  });
+
+  // Hide carousels
+  hideAllCarousels();
+  hideAllContent();
+
+  // Reset active item
+  activeItem = null;
+}
+
+// Close when clicking outside the right side content
+rightSide.addEventListener('click', function(e) {
+  if (e.target === this) {
+    closeActiveItem();
+  }
+});
+
+</script>
+
+</body>
+</html>

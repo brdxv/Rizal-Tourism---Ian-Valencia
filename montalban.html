@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Montalban (Rodriguez) - Rizal Province</title>
+
+  <link href="fonts/satoshi.css" rel="stylesheet">
+  <link href="fonts/sentient.css" rel="stylesheet">
+  <link href="menu.css" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+    scroll-behavior: smooth;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    }
+
+
+    body {
+      font-family: 'Satoshi-Regular', sans-serif;
+      color: #222;
+      
+    }
+
+    h1, h2 {
+      font-family: 'Sentient', serif;
+    }
+    h3 {
+      font-family: 'Sentient', serif;
+      color: black;
+      
+    }
+
+    h4 {
+      font-family: 'Sentient', serif;
+      color: rgb(57, 57, 57);
+      text-align: left;
+    }
+
+    section {
+      scroll-snap-align: start;
+    }
+    .hero {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    overflow: hidden;
+    }
+
+
+    .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: url('Resources/Images/town4.jpg') center center / cover no-repeat;
+    filter: brightness(0.7); /* Optional */
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+    }
+
+    .hero-bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+    z-index: 1;
+    }
+        
+
+    .second-hero {
+    position: relative; /* Ensure it's not being shifted off-screen */
+    background: rgb(169, 169, 169);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 0; /* Reset any unwanted padding that might push things left */
+    padding-right: 0; /* Same for right side */
+    }
+
+    .hero h1 {
+      font-size: 100px;
+      text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .hero h2 {
+      font-size: 1.8rem;
+      margin-top: 10px;
+      color: #eee;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    .history-preview {
+      max-width: 1500px;
+      margin-top: 20px;
+      font-size: 30px;
+      padding: 0 20px;
+    }
+
+    .history-preview a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .wrapper {
+    transform-origin: center center;
+    transform: scale(0.75);
+    width: 70vw;
+    margin-left: 10%;
+    }
+
+    .bento {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 300px);
+    gap: 10px;
+    padding-left: 0; /* Ensure no padding pushing content left */
+    padding-right: 0; /* Same for right */
+    }
+
+
+    .bento-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    }
+
+    .bento-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease;
+      
+    }
+
+    .bento-item:hover img {
+      transform: scale(1.05);
+      
+    }
+
+    .bento-item::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+      pointer-events: none;
+    }
+
+    .bento-content {
+      position: absolute;
+      bottom: 15px;
+      left: 15px;
+      right: 25px;
+      color: white;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .bento-content .text {
+      font-size: 25px;
+      font-weight: 600;
+    }
+
+    .bento-content .arrow {
+      width: 32px;
+      height: 32px;
+      border: 2px solid white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 16px;
+      transform: rotate(-45deg);
+    }
+
+    .item-a { grid-column: 1 / 2; grid-row: 1 / 3; }
+    .item-b { grid-column: 2 / 3; grid-row: 1 / 2; }
+    .item-c { grid-column: 3 / 4; grid-row: 1 / 2; }
+    .item-d { grid-column: 2 / 4; grid-row: 2 / 3; }
+    .item-e { grid-column: 2 / 4 ; grid-row: 3 / 5 ; }
+
+    .item-text {
+      grid-column: 1 / 2;
+      grid-row: 3 / 5;
+      background-color: #fff;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .text-left h2 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    .text-left p {
+      margin-bottom: -30px;
+      font-size: 0.95rem;
+      color: #000000;
+    }
+
+    .text-right p {
+      margin-bottom: -30px;
+      font-size: 0.95rem;
+      color: #000000;
+      text-align: left;
+      
+    }
+
+    .text-right .info-block {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+    }
+
+    .hero h3 {
+        margin-bottom: 10px;
+    }
+
+    .info-block .icon-holder {
+      width: 50px;
+      height: 50px;
+      background-color: #000000;
+      border-radius: 10px;
+      flex-shrink: 0;
+    }
+
+    .info-block h3 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .info-block p {
+      margin: 5px 0 0;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    @media (max-width: 1024px) {
+      .bento {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+      }
+
+      .item-e,
+      .item-a,
+      .item-b,
+      .item-c,
+      .item-d,
+      .item-text {
+        grid-column: span 1 !important;
+        grid-row: auto !important;
+        height: 250px;
+      }
+
+      .item-text {
+        height: auto;
+        padding: 20px;
+      }
+      .item-d{
+        z-index: -1;
+      }
+    }
+
+    /* Limited Beat Animation (2x only) */
+    @keyframes beat-twice {
+      0%, 100% { transform: scale(1); }
+      25% { transform: scale(1.08); }
+      50% { transform: scale(1); }
+      75% { transform: scale(1.08); }
+    }
+
+    .scale-effect {
+      animation: beat-twice 2.4s ease-in-out forwards;
+      z-index: 5;
+    }
+
+    .mouse-icon {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: auto;
+    opacity: 0.8;
+    animation: float 2s ease-in-out infinite;
+    z-index: 2;
+    }
+
+    @keyframes float {
+    0%, 100% {
+        transform: translateX(-50%) translateY(0);
+    }
+    50% {
+        transform: translateX(-50%) translateY(10px);
+    }
+    }
+
+    .carousel1, .carousel2, .carousel3, .carousel4, .carousel5 {
+    display: none;
+    }
+
+    .carousel1, .carousel2, .carousel3, .carousel4, .carousel5 {
+      width: 30vw;
+      height: 100vh;
+      overflow: hidden;
+      position: absolute;
+      margin-left: 5%;
+    }
+
+    /* Carousel image styling and animation */
+    .carousel1 img, .carousel2 img, .carousel3 img, .carousel4 img, .carousel5 img {
+      width: 100%;
+      height: auto;
+      animation: carousel-animation 10s infinite linear;
+    }
+
+    /* Keyframes for carousel animation */
+    @keyframes carousel-animation {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-100%); }
+    }
+
+    .carousel1 img, .carousel2 img, .carousel3 img, .carousel4 img, .carousel5 img {
+    width: 100%;
+    height: auto;
+    animation: carousel-animation 10s infinite linear;
+    animation-fill-mode: forwards;
+    }
+
+    /* Side grid for image carousel */
+    .side-grid {
+      position: absolute;
+      top: 0;
+      width: 25%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+    }
+
+    /* Left side grid styles */
+    .left-side {
+      left: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+
+    /* Right side grid styles */
+    .right-side {
+      right: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center top;
+      z-index: 10;
+      width: 31.3vw;
+      height: 100vh;
+      color: #000000;
+      background: white;
+      pointer-events: auto;
+    }
+
+    .right-side h2 {
+      color: #000000;
+      font-size: large;
+    }
+
+    .bento-item.active::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 4;
+    }
+
+    .bento-item.active-grid {
+      position: relative;
+    }
+
+    .bento-item.active-grid::before {
+  content: none !important;
+}
+
+    .bento-item.inactive {
+      pointer-events: none;
+      filter: brightness(0.5);
+    }
+
+
+    /* Keep overlay for inactive grids */
+.bento-item.inactive::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 4;
+  pointer-events: none;
+}
+
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 30px;
+      height: 30px;
+      background: rgba(0,0,0,0.5);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      font-size: 16px;
+      cursor: pointer;
+      z-index: 11;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .right-content {
+      padding: 40px;
+      height: 100%;
+      overflow-y: auto;
+    }
+
+    .home-button {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 50px;
+  height: 50px;
+  background: rgba(0,0,0,0.5);
+  color: white;
+  border-radius: 50%; /* Perfect circle */
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 100;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  overflow: hidden;
+}
+
+.home-button::before {
+  content: 'Home';
+  position: absolute;
+  left: 60px; /* Start outside the circle */
+  opacity: 0;
+  transition: all 0.3s ease;
+  font-size: 16px;
+  font-family: 'Satoshi-Regular', sans-serif;
+  white-space: nowrap;
+}
+
+.home-button:hover {
+  background: rgba(0,0,0,0.8);
+  width: 100px; /* Expanded width */
+  border-radius: 25px; /* Pill shape when expanded */
+  justify-content: flex-end; /* Push icon to right */
+  padding-right: 15px; /* Space for icon */
+}
+
+.home-button:hover::before {
+  opacity: 1;
+  left: 15px; /* Move text inside the expanded button */
+  transition-delay: 0.1s;
+}
+
+  </style>
+</head>
+<body>
+  <nav class="floating-menu">
+    <a href="home page.html" class="menu-item">Home</a>
+    <a href="about.html" class="menu-item">About</a>
+    <a href="about.html#contact" class="menu-item">Contacts</a>
+  </nav>
+        <a href="home page.html" class="home-button" onclick="scrollToTop()">⌂</a>
+ 
+                    <!-- Navigation Buttons -->
+          <div class="town-navigation">
+            <a href="binangonan.html" class="nav-button prev-town">
+              <i class="fas fa-arrow-left"></i>
+              <span>Previous Town</span>
+            </a>
+            
+            <a href="tanay.html" class="nav-button next-town">
+              <span>Next Town</span>
+              <i class="fas fa-arrow-right"></i>
+            </a>
+          </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <h1>Montalban (Rodriguez)</h1>
+        <h2>Gateway to the Sierra Madre</h2>
+        <div class="history-preview">
+        Established as a town in 1871 during the Spanish regime, Montalban was originally called "Balite" after the Balite trees along the Montalban River. The name was later changed to "Montalban," derived from the Spanish word "monte," meaning mountain, due to its mountainous surroundings. The town played a role in the Philippine Revolution, with locals joining the Katipunan to fight for independence.
+        <a onclick="scrollToHistory()">See more...</a>
+
+        <img src="Resources/Images/mouse-icon.png" alt="Scroll Down Icon" class="mouse-icon" />
+        </div>
+    </section>
+
+    <!-- Second Section -->
+    <section class="hero second-hero" id="history-section">
+      <!-- Side grids for carousel and text content -->
+      <div class="side-grid left-side" id="left-side">
+        <div class="carousel1">
+          <img src="Resources/Images/montalban/item-A1.jpg" alt="Image 1" />
+          <img src="Resources/Images/montalban/item-A2.jpg" alt="Image 2" />
+          <img src="Resources/Images/montalban/item-A3.jpg" alt="Image 3" />
+        </div>
+
+        <div class="carousel2">
+          <img src="Resources/Images/montalban/item-A4.jpg" alt="Image 4" />
+          <img src="Resources/Images/montalban/item-A5.jpg" alt="Image 5" />
+          <img src="Resources/Images/montalban/item-A6.jpg" alt="Image 6" />
+        </div>
+
+        <div class="carousel3">
+          <img src="Resources/Images/montalban/item-A7.jpg" alt="Image 7" />
+          <img src="Resources/Images/montalban/item-A8.jpg" alt="Image 8" />
+          <img src="Resources/Images/montalban/item-A9.jpg" alt="Image 9" />
+        </div>
+
+        <div class="carousel4">
+          <img src="Resources/Images/montalban/item-A12.jpg" alt="Image 10" />
+          <img src="Resources/Images/montalban/item-A11.jpg" alt="Image 11" />
+          <img src="Resources/Images/montalban/item-A10.jpg" alt="Image 12" />
+        </div>
+
+        <div class="carousel5">
+          <img src="Resources/Images/montalban/item-A13.jpg" alt="Image 13" />
+          <img src="Resources/Images/montalban/item-A14.jpg" alt="Image 14" />
+          <img src="Resources/Images/montalban/item-A15.jpg" alt="Image 15" />
+        </div>
+      </div>
+      
+      <div class="side-grid right-side" id="right-side">
+        <button class="close-btn" id="close-btn">×</button>
+        <div class="right-content">
+          <div class="content-a">
+            <h2>Wawa Dam</h2>
+            <p>Wawa Dam is a historic dam surrounded by breathtaking natural scenery, popular for picnics and hiking. Built during
+              the American colonial period, it once served as Manila's primary water source. Today, it's a favorite destination for nature
+              lovers and adventure seekers, offering stunning views of the surrounding mountains and a refreshing escape from city life. Wawa Dam, also known as Montalban Dam, is a historic gravity dam located in Barangay Wawa, Municipality of Rodriguez (formerly Montalban), in Rizal Province, Philippines. It was constructed in 1909 during the American colonial era over the Marikina River, within the Montalban Gorge, a water gap in the Sierra Madre Mountains. The primary purpose of the dam was to supply water to Metro Manila. The dam is approximately 85 meters long and 12 meters high, with a maximum water depth of 13 meters.<br><br>
+
+              The name "Wawa" is derived from the Dumagat word meaning "entrance," referring to the gorge’s appearance as a natural gateway. The surrounding area is characterized by towering limestone cliffs and lush greenery, making it a picturesque destination.<br><br>
+              
+              In 1967, the dam ceased its operations after the completion of the Angat Dam, which became a more reliable water source for the region. Since then, Wawa Dam has become a popular recreational spot, attracting visitors for activities like hiking, swimming, and photography. The site also holds historical significance, as it was a strategic location during World War II.<br><br>
+              
+              Today, Wawa Dam stands as a testament to the country’s engineering history and natural beauty, offering a serene escape from the bustling city life.</p>
+          </div>
+          <div class="content-b">
+            <h2>Montalban Town Fiesta</h2>
+            <p>The Binangonan Town Fiesta is an annual celebration held in honor of Santa Ursula, the town's patroness. This vibrant festivity typically takes place in October, with the main events culminating on October 21, coinciding with the feast day of Santa Ursula. The fiesta is a significant cultural and religious occasion for the residents of Binangonan, Rizal.<br><br> The celebration is marked by a series of activities that blend religious observance with community festivities. A highlight of the fiesta is the Korakol, a traditional fluvial parade where the image of Santa Ursula is carried along the river, accompanied by devotees and colorful boats. This procession is a testament to the town's deep-rooted Catholic faith and its connection to the waterways that have historically supported its livelihood.<br><br> In addition to the religious events, the fiesta features various cultural programs, including street dancing, musical performances, and community feasts. The streets are adorned with vibrant decorations, and the atmosphere is filled with joy and camaraderie as locals and visitors come together to celebrate.<br><br> The Binangonan Town Fiesta not only honors Santa Ursula but also showcases the rich cultural heritage and communal spirit of the people of Binangonan. It serves as a time for reflection, thanksgiving, and unity among the residents, 
+              reinforcing the town's identity and traditions. The Montalban Town Fiesta is celebrated in honor of San Jose, featuring religious activities and vibrant community events. The festival showcases the town's rich culture through street dancing, local cuisine, and traditional performances. It's a time when the community comes together to celebrate their heritage and welcome visitors with warm hospitality.</p>
+          </div>
+          <div class="content-c">
+            <h2>Local Cuisine</h2>
+            <p>Montalban, also known as Rodriguez, is a municipality in Rizal Province, Philippines, renowned for its rich culinary heritage.<br> The local cuisine reflects a blend of traditional Filipino flavors and regional specialties, offering a diverse array of dishes that cater to various palates.<br><br>
+
+              One of the must-try dishes in Montalban is Lomi, a hearty noodle soup characterized by its thick egg noodles, savory broth, and a mix of meats and vegetables.<br> This dish is a staple comfort food for many locals and visitors alike.<br><br>
+              
+              For those seeking a more contemporary dining experience, Kristal-G Ristorante offers a fusion of Italian and Filipino cuisines in a fine dining setting.<br> Known as the first and only fine dining restaurant in Montalban, it provides a cozy ambiance suitable for family gatherings and special occasions.<br><br>
+              
+              Another notable establishment is Calle Cafe by Don Gabriel, which has garnered praise for its delightful menu and inviting atmosphere.<br> With a rating of 4.7 out of 5 on Restaurant Guru, it stands as a testament to the town's evolving food scene.<br><br>
+              
+              For those with a sweet tooth, Conti's Take Out Nook at Xentromall Montalban offers a variety of delightful cakes and baked goods, perfect for satisfying dessert cravings.<br><br>
+              
+              Additionally, Cafe Princeza Talisay provides an all-you-can-eat buffet experience, allowing diners to indulge in a wide array of dishes at their leisure.<br><br>
+              
+              These establishments, among others, showcase the vibrant and diverse culinary landscape of Montalban, making it a destination worth exploring for food enthusiasts.<br> Montalban is known for its unique version of tinumis, a local take on dinuguan (pork blood stew) that features a distinct blend of spices. The town also offers various mountain-grown produce and freshwater fish dishes. Food stalls during fiestas and weekends offer these specialties alongside traditional Filipino desserts and snacks.</p>
+          </div>
+          <div class="content-d">
+            <h2>Dumagat Communities</h2>
+            <p>The Dumagat, also known as the Agta-Dumagat-Remontados, are an indigenous people residing in the mountainous regions of Rodriguez (Montalban), Rizal, particularly in Sitio Kabuhuan, Barangay Puray.<br> These communities have lived in the Sierra Madre mountain range for generations, maintaining a deep connection to their ancestral lands and natural surroundings.<br><br>
+
+              Traditionally, the Dumagat people practiced kaingin (slash-and-burn agriculture), hunting, and gathering as their primary means of subsistence.<br> Their culture is rich with oral traditions, rituals, and a profound respect for nature.<br> However, their way of life has been increasingly threatened by external pressures such as deforestation, land encroachment, and the construction of large-scale infrastructure projects like the Kaliwa Dam, which poses a risk to their ancestral domain (philstar.com).<br><br>
+              
+              In response to these challenges, various initiatives have been undertaken to support and empower the Dumagat communities.<br> For instance, the Montalban Municipal Government launched the ‘Angat Dumagat’ program, providing livelihood and entrepreneurship training to Dumagat women, focusing on skills like making traditional Filipino delicacies such as pichi-pichi (mirror.pia.gov.ph).<br><br>
+              
+              Despite the adversities they face, the Dumagat communities continue to uphold their cultural heritage and strive for the preservation of their ancestral lands and traditions.<br> Montalban is home to indigenous Dumagat communities whose traditions and way of life contribute to the area's rich cultural tapestry. These indigenous groups maintain their ancestral practices while adapting to modern times. Visitors can learn about their sustainable living practices, traditional crafts, and deep connection to the Sierra Madre mountains.</p>
+          </div>
+          <div class="content-e">
+            <h2>Historical Content of Montalban (Rodriguez)</h2>
+            <p>Origins and Early History<br> <b>Binangonan</b>, originally part of the larger settlement of Morong, is one of the oldest municipalities in the Philippines.<br> <b>Spanish missionaries</b> reached the area in 1574, and by 1621, the <b>Franciscans</b> established Binangonan as an independent parish, naming it after St. Ursula.<br> The <b>Santa Ursula Parish Church</b>, constructed between 1792 and 1800, stands as a testament to this period and is recognized as a National Cultural Treasure. (en.wikipedia.org)<br><br>
+
+              American Colonial Era<br> Under <b>American rule</b>, Binangonan became an independent municipality on March 29, 1900, through <b>General Order No. 40</b>.<br> It was incorporated into the newly created province of <b>Rizal</b> on June 11, 1901, via <b>Act No. 137</b>.<br> However, in 1903, <b>Act No. 942</b> temporarily combined Binangonan with Morong, Baras, and Cardona.<br> This consolidation was reversed later that year with <b>Act No. 948</b>, restoring Binangonan's independence and reuniting it with Angono. (binangonan.gov.ph)<br><br>
+              
+              World War II and Liberation<br> During <b>World War II</b>, Binangonan was occupied by Japanese forces.<br> On February 25, 1945, coinciding with the town's fiesta in honor of St. Ursula, <b>American forces</b> liberated Binangonan.<br> Residents celebrated the liberation by parading and sharing food with the liberators, who reciprocated with chocolates and cigarettes. (philhistdata.top)<br><br>
+              
+              Cultural Heritage<br> Binangonan is home to the <b>Angono-Binangonan Petroglyphs</b>, the oldest known artworks in the Philippines, dating back to around 3000 B.C.<br> These prehistoric carvings were discovered in 1965 by <b>National Artist Carlos "Botong" Francisco</b> and are located near the town's border with Angono.<br> The site is now a <b>National Cultural Treasure</b>, offering insights into early Filipino life. (yodisphere.com)<br><br>
+              
+              Modern Day<br> Today, Binangonan is a bustling municipality with a population exceeding 300,000.<br> It boasts a thriving <b>fishing industry</b>, thanks to its extensive coastline along Laguna de Bay, and is home to various industries, including <b>cement production</b>.<br> The town continues to celebrate its rich history and cultural heritage through events like the annual <b>fiesta</b> in honor of St. Ursula. (en.wikipedia.org)<br><br> Montalban, officially known as Rodriguez, is a first-class municipality in Rizal province, Philippines. Established as a town in 1871 during the Spanish regime, it was originally called "Balite" before being renamed "Montalban." The town was renamed Rodriguez in 1982 in honor of Eulogio "Amang" Rodriguez, a Filipino statesman.</p>
+            <p>The municipality is located at the foothills of the Sierra Madre mountain range, making it a gateway to numerous natural attractions. It played a significant role in the Philippine Revolution, with locals joining the Katipunan movement against Spanish colonial rule. The historic Pamitinan Cave in Montalban was where Andres Bonifacio and his men sought refuge and declared Philippine independence in 1895.</p>
+            <p>Today, Montalban is known for its eco-tourism spots, including Wawa Dam, Pamitinan Cave, and the challenging hiking trails of Mt. Pamitinan and Mt. Binacayan. The town continues to develop while preserving its natural resources and cultural heritage.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="wrapper">
+        <div class="bento">
+          <!-- Text block (static) -->
+          <section class="item-text" id="history-paragraph">
+            <div class="text-left">
+              <h3>Gateway to the Sierra Madre</h3>
+              <p>Montalban isn't just a town—it's a breathtaking blend of history, adventure, and natural wonders that captivates every visitor.</p>
+            </div>
+            <div class="text-right">
+              <div class="info-block">
+                <div class="icon-holder"></div>
+                <div>
+                  <h4>Historic Landmarks</h4>
+                  <p>From Wawa Dam to Pamitinan Cave, Montalban is steeped in revolutionary history.</p>
+                </div>
+              </div>
+              <div class="info-block">
+                <div class="icon-holder"></div>
+                <div>
+                  <h4>Adventure Capital</h4>
+                  <p>Home to challenging hiking trails like Mt. Pamitinan and Mt. Binacayan.</p>
+                </div>
+              </div>
+              <div class="info-block">
+                <div class="icon-holder"></div>
+                <div>
+                  <h4>Indigenous Heritage</h4>
+                  <p>Dumagat communities preserve traditional ways of life in the Sierra Madre.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Other bento items -->
+          <div class="bento-item item-a" id="grid-A">
+            <img src="Resources/Images/montalban/item-A1.jpg" alt="Montalban Image A" />
+            <div class="bento-content">
+              <div class="text">Wawa Dam</div>
+              <div class="arrow">→</div>
+            </div>
+          </div>
+
+          <div class="bento-item item-b" id="grid-B">
+            <img src="Resources/Images/montalban/item-A4.jpg" alt="Montalban Image B" />
+            <div class="bento-content">
+              <div class="text">Town Fiesta</div>
+              <div class="arrow">→</div>
+            </div>
+          </div>
+
+          <div class="bento-item item-c" id="grid-C">
+            <img src="Resources/Images/montalban/item-A7.jpg" alt="Montalban Image C" />
+            <div class="bento-content">
+              <div class="text">Local Cuisine</div>
+              <div class="arrow">→</div>
+            </div>
+          </div>
+
+          <div class="bento-item item-d" id="grid-D">
+            <img src="Resources/Images/montalban/item-A10.jpg" alt="Montalban Image D" />
+            <div class="bento-content">
+              <div class="text">Dumagat Communities</div>
+              <div class="arrow">→</div>
+            </div>
+          </div>
+
+          <!-- Animated grid first -->
+          <div class="bento-item item-e" id="grid-E">
+            <img src="Resources/Images/montalban/item-A13.jpg" alt="Montalban Image E" />
+            <div class="bento-content">
+              <div class="text">History</div>
+              <div class="arrow">→</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  <script>
+    function scrollToHistory() {
+      const section = document.getElementById("history-section");
+      const historyGrid5 = document.getElementById("grid-E");
+
+      section.scrollIntoView({ behavior: "smooth" });
+
+      // Reset and trigger animation (force reflow)
+      historyGrid5.classList.remove("scale-effect");
+      void historyGrid5.offsetWidth; // reflow
+      historyGrid5.classList.add("scale-effect");
+
+
+      function setupCarousels() {
+  const carousels = document.querySelectorAll('[class^="carousel"]');
+  carousels.forEach(carousel => {
+    // Clone all images and append them
+    const images = carousel.querySelectorAll('img');
+    images.forEach(img => {
+      const clone = img.cloneNode(true);
+      carousel.appendChild(clone);
+    });
+    
+    // Double the animation duration since we doubled the content
+    carousel.style.animationDuration = '20s';
+    });
+    }
+
+    // Call this in your DOMContentLoaded event
+    document.addEventListener("DOMContentLoaded", function() {
+    setupCarousels();
+    });
+
+    function scrollToTop() {
+    window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+    });
+    return false; // Prevent default anchor behavior
+    }
+
+
+    }
+
+    function hideAllCarousels() {
+      const carousels = document.querySelectorAll('.carousel1, .carousel2, .carousel3, .carousel4, .carousel5');
+      carousels.forEach(c => c.style.display = 'none');
+    }
+
+    function showCarousel(number) {
+      hideAllCarousels();
+      const carousel = document.querySelector('.carousel' + number);
+      if (carousel) {
+        carousel.style.display = 'block';
+      }
+    }
+
+    function hideAllContent() {
+      const contents = document.querySelectorAll('.right-content > div');
+      contents.forEach(c => c.style.display = 'none');
+    }
+
+    function showContent(letter) {
+      hideAllContent();
+      const content = document.querySelector('.content-' + letter);
+      if (content) {
+        content.style.display = 'block';
+      }
+    }
+
+// Main functionality
+document.addEventListener("DOMContentLoaded", function() {
+  const bentoItems = document.querySelectorAll('.bento-item');
+  const leftSide = document.getElementById('left-side');
+  const rightSide = document.getElementById('right-side');
+  const closeBtn = document.getElementById('close-btn');
+  let activeItem = null;
+
+  // Initialize - hide all carousels and content
+  hideAllCarousels();
+  hideAllContent();
+  leftSide.style.opacity = '0';
+  rightSide.style.opacity = '0';
+
+  // Add click event to each bento item
+  bentoItems.forEach((item, index) => {
+    item.addEventListener('click', function() {
+      // If clicking the active item, close it
+      if (activeItem === this) {
+        closeActiveItem();
+        return;
+      }
+
+      // If another item is active, ignore click
+      if (activeItem) return;
+
+      // Set this item as active
+      activeItem = this;
+      
+      // Show overlay on other items only
+      bentoItems.forEach(bento => {
+        if (bento !== activeItem) {
+          bento.classList.add('inactive');
+        } else {
+          bento.classList.remove('inactive');
+        }
+      });
+
+      // Add active class to clicked item
+      this.classList.add('active-grid');
+
+      // Show side grids
+      leftSide.style.opacity = '1';
+      rightSide.style.opacity = '1';
+
+      // Show corresponding carousel and content
+      showCarousel(index + 1);
+      showContent(String.fromCharCode(97 + index)); // a, b, c, d, e
+    });
+  });
+
+
+      // Close button functionality
+      closeBtn.addEventListener('click', closeActiveItem);
+
+      // Function to close the active item
+      function closeActiveItem() {
+        if (!activeItem) return;
+
+        // Hide side grids
+        leftSide.style.opacity = '0';
+        rightSide.style.opacity = '0';
+
+        // Remove active classes
+        activeItem.classList.remove('active-grid');
+        
+        // Remove inactive class from other items
+        bentoItems.forEach(bento => {
+          bento.classList.remove('inactive');
+        });
+
+        // Hide carousels
+        hideAllCarousels();
+        hideAllContent();
+
+        // Reset active item
+        activeItem = null;
+      }
+
+      // Close when clicking outside the right side content
+      rightSide.addEventListener('click', function(e) {
+        if (e.target === this) {
+          closeActiveItem();
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
